@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>황금시대 · 오늘 금값 · 공장직영 샘플</title>
+  <meta name="description" content="송파 천호 공장직영 금은방. 오늘 금값, 내 금 계산기, 맞춤 제작 견적." />
+  <link rel="icon" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Noto+Sans+KR:wght@400;500;600&family=Noto+Serif+KR:wght@500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ivory: #f7f3ec;
+      --paper: #efe8dc;
+      --ink: #1a1612;
+      --ink-soft: #3a342c;
+      --muted: #6f675d;
+      --line: #d9d0c3;
+      --gold: #9a7b4f;
+      --gold-deep: #7a5e38;
+      --gold-bright: #ead7a2;
+      --night: #100e0c;
+      --night-2: #1c1814;
+      --cream: #fffaf3;
+      --display: "Cormorant Garamond", "Noto Serif KR", serif;
+      --sans: "Noto Sans KR", Pretendard, system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--ivory);
+      color: var(--ink);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: 4.5rem;
+    }
+    img { max-width: 100%; display: block; }
+    button, a { font-family: inherit; }
+    button { cursor: pointer; }
+    h1, h2, h3 { font-family: var(--display); font-weight: 500; text-wrap: balance; margin: 0; }
+    p { text-wrap: pretty; }
+    .wrap { max-width: 72rem; margin: 0 auto; padding: 0 1.25rem; }
+    .sample-bar {
+      background: var(--night);
+      color: var(--gold-bright);
+      text-align: center;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      padding: 0.55rem 1rem;
+    }
+    header {
+      position: sticky; top: 0; z-index: 40;
+      background: color-mix(in oklab, var(--ivory) 92%, transparent);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid color-mix(in oklab, var(--line) 80%, transparent);
+    }
+    .head {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 4.25rem;
+    }
+    .brand { text-decoration: none; color: var(--ink); line-height: 1; }
+    .brand strong { font-family: var(--display); font-size: 1.6rem; font-weight: 500; display: block; }
+    .brand span { font-size: 10px; letter-spacing: 0.22em; color: var(--gold-deep); }
+    nav { display: none; gap: 1.5rem; }
+    nav a { color: var(--ink-soft); text-decoration: none; font-size: 14px; }
+    nav a:hover { color: var(--ink); }
+    .tel-btn {
+      display: none; height: 2.5rem; align-items: center;
+      background: var(--ink); color: var(--ivory); text-decoration: none;
+      border-radius: 6px; padding: 0 0.85rem; font-size: 14px;
+    }
+    .hero {
+      position: relative; isolation: isolate; min-height: 88svh;
+      background: var(--night); color: var(--ivory); overflow: hidden;
+      display: flex; align-items: flex-end;
+    }
+    .hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.55; }
+    .hero-mask {
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, var(--night) 0%, rgba(16,14,12,.8) 50%, rgba(16,14,12,.2) 100%);
+    }
+    .hero-copy { position: relative; padding: 7rem 0 4rem; }
+    .kicker { font-size: 12px; letter-spacing: 0.28em; color: var(--gold); margin: 0; }
+    .hero h1 { font-size: clamp(2.6rem, 8vw, 4.5rem); line-height: 1.05; margin-top: 1rem; }
+    .hero p { max-width: 28rem; margin: 1.2rem 0 0; color: rgba(247,243,236,.75); font-size: 15px; line-height: 1.6; }
+    .row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+      height: 3rem; padding: 0 1.25rem; border-radius: 6px; font-size: 15px; font-weight: 500;
+      text-decoration: none; border: 0; color: var(--ivory); background: var(--gold);
+    }
+    .btn:hover { background: var(--gold-deep); }
+    .btn-cream { background: var(--cream); color: var(--ink); border: 1px solid var(--line); }
+    .btn-cream:hover { background: var(--paper); }
+    .btn-ink { background: var(--ink); color: var(--ivory); }
+    .btn-ghost { background: transparent; color: var(--ink); }
+    .btn.full { width: 100%; }
+    .btn:disabled { opacity: .4; cursor: not-allowed; }
+    .cards { display: grid; gap: 0.75rem; padding: 2.5rem 0; }
+    .card {
+      border: 1px solid var(--line); background: var(--cream);
+      border-radius: 8px; padding: 1.25rem; text-decoration: none; color: inherit;
+    }
+    .card h2 { font-size: 1.6rem; margin-top: 0.7rem; }
+    .card p { margin: 0.5rem 0 0; font-size: 14px; color: var(--muted); line-height: 1.55; }
+    .card svg { color: var(--gold-deep); }
+    .pills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+    .pill-tag {
+      border: 1px solid color-mix(in oklab, var(--gold-bright) 50%, transparent);
+      background: rgba(16,14,12,.4); color: var(--gold-bright);
+      border-radius: 999px; padding: 4px 12px; font-size: 11px; letter-spacing: 0.14em;
+    }
+    .hero-custom { margin: 0.75rem 0 0; font-size: 14px; letter-spacing: 0.04em; color: var(--gold-bright); }
+    .shine { position: relative; overflow: hidden; }
+    .shine::before {
+      content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background: linear-gradient(180deg, color-mix(in oklab, white 16%, transparent), transparent 22%);
+    }
+    .shine::after {
+      content: ""; position: absolute; top: -30%; bottom: -30%; width: 38%; z-index: 2; pointer-events: none;
+      mix-blend-mode: screen;
+      background: linear-gradient(100deg, transparent 0%, transparent 32%, color-mix(in oklab, var(--gold-bright) 18%, transparent) 44%, color-mix(in oklab, white 72%, transparent) 50%, color-mix(in oklab, var(--gold-bright) 32%, transparent) 56%, transparent 70%);
+      transform: translateX(-140%) skewX(-20deg);
+      animation: glass 3.6s ease-in-out infinite;
+    }
+    @keyframes glass {
+      0%, 14% { transform: translateX(-140%) skewX(-20deg); }
+      58%, 100% { transform: translateX(320%) skewX(-20deg); }
+    }
+    .hot-card {
+      position: relative; background: var(--night); color: var(--ivory); border: 0;
+      box-shadow: 0 0 0 1px color-mix(in oklab, var(--gold-bright) 88%, white);
+      overflow: hidden;
+    }
+    .hot-card h2, .hot-card svg { color: var(--gold-bright); }
+    .hot-card p { color: rgba(247,243,236,.75); }
+    .hot {
+      display: inline-flex; height: 1.5rem; align-items: center; border-radius: 999px;
+      padding: 0 0.65rem; font-size: 10px; font-weight: 600; letter-spacing: 0.18em; color: var(--night);
+      background-image: linear-gradient(110deg, var(--gold-deep) 0%, var(--gold-bright) 42%, #fff6d8 50%, var(--gold-bright) 58%, var(--gold-deep) 100%);
+      background-size: 220% 100%;
+      animation: shimmer 2.6s linear infinite;
+    }
+    @keyframes shimmer { to { background-position: 220% 50%; } }
+    .spark {
+      position: absolute; width: 6px; height: 6px; background: var(--gold-bright);
+      transform: rotate(45deg); animation: pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse { 50% { opacity: .35; transform: rotate(45deg) scale(.85); } }
+    .paper { background: var(--paper); padding: 4.5rem 0; }
+    .split { display: grid; gap: 2.5rem; }
+    .eyebrow { font-size: 12px; letter-spacing: 0.2em; color: var(--gold-deep); margin: 0; }
+    .calc {
+      border: 1px solid var(--line); background: var(--cream);
+      border-radius: 12px; padding: 1.25rem;
+    }
+    .seg { display: grid; grid-template-columns: 1fr 1fr; background: var(--paper); padding: 4px; border-radius: 6px; margin-bottom: 1.25rem; }
+    .seg button, .chip, .unit button {
+      height: 2.75rem; border: 0; background: transparent; color: var(--ink-soft); font-size: 14px; font-weight: 500; border-radius: 4px;
+    }
+    .seg button.on { background: var(--ink); color: var(--ivory); }
+    .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 1.25rem; }
+    .chip { border: 1px solid var(--line); padding: 0 0.8rem; border-radius: 999px; background: var(--cream); }
+    .chip.on { background: var(--ink); color: var(--ivory); border-color: var(--ink); }
+    label.field { display: block; font-size: 12px; color: var(--muted); }
+    input, textarea, select {
+      width: 100%; margin-top: 4px; height: 2.75rem; border: 1px solid var(--line);
+      background: var(--ivory); border-radius: 6px; padding: 0 0.75rem; font: inherit; color: var(--ink);
+    }
+    textarea { height: 6rem; padding: 0.7rem 0.75rem; resize: vertical; }
+    .weight { display: grid; grid-template-columns: 1fr auto; gap: 0.5rem; margin-bottom: 1.25rem; }
+    .unit { display: flex; border: 1px solid var(--line); border-radius: 6px; align-self: end; }
+    .unit button { width: 3.5rem; }
+    .unit button.on { background: var(--ink); color: var(--ivory); }
+    .quote { background: var(--night); color: var(--ivory); border-radius: 8px; padding: 1.2rem 1rem; }
+    .quote .kicker { color: var(--gold); }
+    .quote b { font-family: var(--display); font-size: clamp(2rem, 5vw, 3rem); font-weight: 500; display: block; margin-top: 4px; }
+    .quote p { margin: 0.5rem 0 0; font-size: 12px; color: rgba(247,243,236,.7); }
+    .dl { margin: 1rem 0 0; }
+    .dl div { display: flex; justify-content: space-between; gap: 1rem; border-bottom: 1px solid color-mix(in oklab, var(--line) 80%, transparent); padding: 0.4rem 0; font-size: 14px; }
+    .dl dt { color: var(--muted); }
+    .dl dd { margin: 0; font-variant-numeric: tabular-nums; }
+    .board { border: 1px solid var(--line); background: var(--cream); border-radius: 12px; padding: 1.4rem; }
+    .board h2 { font-size: 1.6rem; }
+    .big { font-family: var(--display); font-size: clamp(2rem, 5vw, 3rem); margin: 0.8rem 0 0; font-variant-numeric: tabular-nums; }
+    .delta { font-size: 14px; color: var(--muted); margin: 0.4rem 0 1rem; }
+    .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; font-size: 12px; color: var(--muted); }
+    .rate { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; border-top: 1px solid var(--line); padding: 0.5rem 0; font-size: 14px; font-variant-numeric: tabular-nums; }
+    .rate span:nth-child(2), .grid3 span:nth-child(2),
+    .rate span:nth-child(3), .grid3 span:nth-child(3) { text-align: right; }
+    .shop { padding: 4.5rem 0 5.5rem; }
+    .shop-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 1rem; margin-bottom: 2rem; }
+    .products { display: grid; gap: 1rem; }
+    .p-card { display: block; overflow: hidden; border: 1px solid var(--line); background: var(--cream); border-radius: 8px; text-decoration: none; color: inherit; }
+    .p-card .ph { aspect-ratio: 1; background: var(--night); overflow: hidden; }
+    .p-card img { width: 100%; height: 100%; object-fit: cover; }
+    .p-card .meta { padding: 1rem; }
+    .p-card .meta p:first-child { margin: 0; font-size: 12px; letter-spacing: 0.14em; color: var(--gold-deep); }
+    .p-card h3 { font-size: 1.25rem; margin-top: 4px; }
+    .p-card .price { margin: 0.5rem 0 0; font-weight: 500; font-variant-numeric: tabular-nums; }
+    .p-card .sub { margin: 4px 0 0; font-size: 12px; color: var(--muted); }
+    .factory { background: var(--night); color: var(--ivory); }
+    .factory .inner { display: grid; gap: 2.5rem; padding: 4rem 0; }
+    .shot { position: relative; overflow: hidden; border-radius: 8px;
+      box-shadow: 0 0 0 1px color-mix(in oklab, var(--gold-bright) 70%, transparent); }
+    .shot img { width: 100%; aspect-ratio: 16/9; object-fit: cover; }
+    .shot .badges { position: absolute; left: 1rem; top: 1rem; display: flex; gap: 0.5rem; align-items: center; }
+    .pill { background: rgba(16,14,12,.7); color: var(--gold-bright); border-radius: 999px; padding: 4px 12px; font-size: 11px; letter-spacing: 0.14em; }
+    .factory h2 { color: var(--gold-bright); font-size: clamp(2rem, 4vw, 2.5rem); margin-top: 0.7rem; }
+    .factory .lead { color: rgba(247,243,236,.75); font-size: 14px; line-height: 1.65; margin-top: 1rem; }
+    .cmp { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 1.4rem; }
+    .cmp div { background: var(--night-2); border-radius: 6px; padding: 0.85rem 1rem; font-size: 14px; }
+    .cmp .dim { border: 1px solid rgba(247,243,236,.12); }
+    .cmp .dim p:first-child { color: rgba(247,243,236,.45); font-size: 11px; margin: 0; }
+    .cmp .lit { box-shadow: 0 0 0 1px color-mix(in oklab, var(--gold-bright) 70%, transparent); }
+    .cmp .lit p:first-child { color: var(--gold-bright); font-size: 11px; margin: 0; }
+    .cmp p + p { margin: 0.35rem 0 0; }
+    .factory ul { margin: 1.4rem 0 0; padding: 0; list-style: none; font-size: 14px; color: rgba(247,243,236,.8); }
+    .factory li { margin: 0.4rem 0; }
+    .visit { padding: 4.5rem 0; }
+    .visit-grid { display: grid; gap: 1rem; margin-top: 2.5rem; }
+    .map { overflow: hidden; border: 1px solid var(--line); border-radius: 8px; min-height: 320px; }
+    .map iframe { width: 100%; height: 100%; min-height: 320px; border: 0; }
+    .visit-card { border: 1px solid var(--line); background: var(--cream); border-radius: 8px; padding: 1.5rem; max-width: 36rem; }
+    footer { border-top: 1px solid var(--line); background: var(--paper); }
+    .foot { display: grid; gap: 2rem; padding: 3rem 0; }
+    .muted { color: var(--muted); font-size: 14px; line-height: 1.55; }
+    .legal { border-top: 1px solid var(--line); padding: 1rem; text-align: center; font-size: 12px; color: var(--muted); }
+    .sticky {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+      background: color-mix(in oklab, var(--ivory) 95%, transparent);
+      border-top: 1px solid var(--line);
+      display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    .sticky a, .sticky button {
+      height: 3.5rem; border: 0; background: transparent; color: var(--ink);
+      font-size: 11px; text-decoration: none; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 2px;
+    }
+    .sticky .factory-btn { background: var(--night); color: var(--gold-bright); }
+    .modal {
+      position: fixed; inset: 0; z-index: 60; background: rgba(16,14,12,.55);
+      display: none; padding: 8vh 1rem 2rem;
+    }
+    .modal.open { display: block; }
+    .sheet {
+      width: min(32rem, 100%); margin: 0 auto; background: var(--ivory); border-radius: 12px;
+      padding: 1.5rem; max-height: 84vh; overflow: auto;
+    }
+    .sheet-h { display: flex; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+    .x { width: 2.75rem; height: 2.75rem; border: 0; background: transparent; border-radius: 6px; font-size: 1.4rem; }
+    .ok { display: none; }
+    .modal.sent .form-fields { display: none; }
+    .modal.sent .ok { display: block; }
+    @media (min-width: 768px) {
+      nav, .tel-btn { display: flex; }
+      .cards { grid-template-columns: repeat(3, 1fr); }
+      .products { grid-template-columns: repeat(3, 1fr); }
+      .split, .factory .inner, .foot { grid-template-columns: 1fr 1fr; }
+      .calc { padding: 1.5rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sample-bar">SAMPLE · 황금시대 · 이 HTML을 카톡·메일로 보내 그대로 보여주세요</div>
+  <header>
+    <div class="wrap head">
+      <a class="brand" href="#top">
+        <strong>황금시대</strong>
+        <span>HWANGGEUM SIDAE</span>
+      </a>
+      <nav>
+        <a href="#calculator">금값 계산</a>
+        <a href="#calculator" data-mode="sell">금 매입</a>
+        <a href="#shop">구매</a>
+        <a href="#visit">방문</a>
+      </nav>
+      <a class="tel-btn" href="tel:050713453180">0507-1345-3180</a>
+    </div>
+  </header>
+
+  <section class="hero" id="top">
+    <img src="hero.jpg" alt="" />
+    <div class="hero-mask"></div>
+    <div class="wrap hero-copy">
+      <p class="kicker">SONGPA · CHEONHO · FACTORY</p>
+      <div class="pills">
+        <span class="pill-tag">예물</span>
+        <span class="pill-tag">반지</span>
+        <span class="pill-tag">목걸이</span>
+        <span class="pill-tag">팔찌</span>
+      </div>
+      <p class="hero-custom">브랜드 디자인 맞춤 가능</p>
+      <h1>오늘 금값으로<br />투명하게.</h1>
+      <p>공장에서 매장까지, 오늘의 금값으로 투명하게. 순금 1돈 살 때 <b id="heroBuy" style="font-weight:500;color:#fffaf3">830,000원</b></p>
+      <div class="row">
+        <a class="btn" href="#calculator">내 금 지금 얼마인지 계산</a>
+        <a class="btn btn-cream" href="#shop">오늘 시세로 구매 견적</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap cards">
+    <a class="card" href="#calculator" data-mode="sell">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1zM2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1zM7 21h10M12 3v18M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>
+      <h2>금 팔기</h2>
+      <p>시세·순도·중량·공제를 계산기로 먼저 보여드립니다.</p>
+    </a>
+    <a class="card" href="#shop">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l2.2 6.6H21l-5.4 3.9 2.1 6.5L12 16.6 6.3 20l2.1-6.5L3 9.6h6.8L12 3z"/></svg>
+      <h2>금 구매 · 맞춤</h2>
+      <p>14K·18K·24K 공장 제작. 오늘 재료비+공임으로 견적.</p>
+    </a>
+    <a class="card hot-card shine" href="#factory">
+      <span class="spark" style="right:20px;top:20px"></span>
+      <span class="spark" style="right:40px;bottom:24px"></span>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="hot">HOT</span>
+        <span style="font-size:10px;letter-spacing:.18em;color:var(--gold-bright)">FACTORY</span>
+      </div>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="margin-top:12px"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/></svg>
+      <h2>공장 직영</h2>
+      <p>중간 유통이 없습니다. 상담하시면 <strong style="color:#fff;font-weight:500">공장가</strong>로 맞춰 드립니다.</p>
+    </a>
+  </section>
+
+  <section class="paper" id="calculator">
+    <div class="wrap split">
+      <div class="board" id="priceBoard"></div>
+      <div>
+        <p class="eyebrow">CALCULATOR</p>
+        <h2 style="font-size:2.2rem;margin-top:.4rem">내 금 계산기</h2>
+        <p class="muted" style="margin:0.7rem 0 1.4rem;max-width:26rem">계산기가 돈을 버는 게 아닙니다. 정확한 감정과 방문으로 연결합니다.</p>
+        <div class="calc">
+          <div class="seg">
+            <button type="button" class="on" data-set="mode" data-v="sell">내 금 팔기</button>
+            <button type="button" data-set="mode" data-v="buy">금 구매</button>
+          </div>
+          <p class="eyebrow" style="margin-bottom:.7rem">순도</p>
+          <div class="chips" id="karats"></div>
+          <div class="weight">
+            <label class="field">중량
+              <input id="weight" inputmode="decimal" value="3.2" />
+            </label>
+            <div class="unit">
+              <button type="button" class="on" data-set="unit" data-v="g">g</button>
+              <button type="button" data-set="unit" data-v="don">돈</button>
+            </div>
+          </div>
+          <div id="itemWrap">
+            <p class="eyebrow" style="margin-bottom:.7rem">품목</p>
+            <div class="chips" id="items"></div>
+          </div>
+          <div class="quote">
+            <p class="kicker" id="quoteLabel">예상 매입가</p>
+            <b id="quoteValue">—</b>
+            <p>감정·스톤·마모에 따라 달라질 수 있습니다. 당일 시세 기준.</p>
+          </div>
+          <div class="dl" id="quoteRows"></div>
+          <button class="btn full" type="button" id="consultCalc" style="margin-top:1.2rem">정확한 감정 · 견적 받기</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="shop wrap" id="shop">
+    <div class="shop-head">
+      <div>
+        <p class="eyebrow">READY TO ORDER</p>
+        <h2 style="font-size:2.2rem;margin-top:.4rem">오늘 시세로 맞추기</h2>
+      </div>
+    </div>
+    <div class="products" id="products"></div>
+  </section>
+
+  <section class="factory" id="factory">
+    <div class="wrap inner">
+      <div class="shot shine">
+        <img src="atelier.jpg" alt="황금시대 공방" />
+        <div class="badges"><span class="hot">HOT</span><span class="pill">공장 직영</span></div>
+        <span class="spark" style="right:24px;top:24px"></span>
+      </div>
+      <div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span class="hot">HOT</span>
+          <p class="kicker" style="color:var(--gold-bright)">FACTORY DIRECT</p>
+        </div>
+        <h2>공장에서 바로 맞추면<br />가격이 달라집니다.</h2>
+        <p class="lead">도매·소매를 한 번 더 거치지 않습니다. 상담만 주시면 재료비+공임 기준으로 <span style="color:var(--gold-bright)">공장가 견적</span>을 냅니다. 같은 중량이어도 일반 금은방보다 상당히 저렴하게 제작할 수 있습니다.</p>
+        <div class="cmp">
+          <div class="dim"><p>일반 금은방</p><p>유통 마진 + 매장 마진</p></div>
+          <div class="lit"><p>황금시대 공장 직영</p><p>재료비 + 공임만</p></div>
+        </div>
+        <ul>
+          <li>소량 · 맞춤 · OEM 제작</li>
+          <li>커플링 · 예물 · 돌반지 공장가</li>
+          <li>보유 금으로 리셋팅 · 교환</li>
+        </ul>
+        <div class="row">
+          <button class="btn shine" type="button" id="factoryConsult" style="background:var(--night);color:var(--gold-bright);border:0">공장가 상담 받기</button>
+          <a class="btn btn-cream" href="#visit">매장 방문 예약</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="visit wrap" id="visit">
+    <p class="eyebrow">VISIT</p>
+    <h2 style="font-size:2.4rem;margin-top:.4rem">방문 · 상담</h2>
+    <p class="muted" style="max-width:28rem;margin-top:.7rem">계산과 견적은 온라인, 확정은 천호 매장에서. 감정 저울을 앞에서 보여드립니다.</p>
+    <div class="visit-card" style="margin-top:2.5rem">
+        <h3 style="font-size:1.8rem">황금시대</h3>
+        <p class="muted" style="margin-top:1.2rem">서울 송파구 천호대로 992 1층<br />천호역 10번 출구에서 30m</p>
+        <p class="muted">매일 10:00 – 19:00<br />시세·재고는 방문 감정 기준</p>
+        <p class="muted">매장 앞 단기 주차 가능 · 방문 전 연락 권장</p>
+        <p style="margin:1rem 0 0"><a href="tel:050713453180" style="color:var(--ink)">0507-1345-3180</a></p>
+        <div class="row">
+          <button class="btn" type="button" id="visitConsult">방문 예약하기</button>
+          <a class="btn btn-cream" href="https://naver.me/GOhWHrw8" target="_blank" rel="noreferrer">네이버 길찾기</a>
+        </div>
+      </div>
+  </section>
+
+  <footer>
+    <div class="wrap foot">
+      <div>
+        <h3 style="font-size:1.6rem">황금시대</h3>
+        <p class="muted" style="max-width:16rem;margin-top:.5rem">공장에서 매장까지, 오늘의 금값으로 투명하게</p>
+      </div>
+      <div class="muted">
+        <p>서울 송파구 천호대로 992 1층</p>
+        <p>천호역 10번 출구에서 30m</p>
+        <p>매일 10:00 – 19:00</p>
+        <p style="margin-top:.8rem"><a href="tel:050713453180" style="color:var(--ink)">0507-1345-3180</a></p>
+        <p><a href="https://naver.me/GOhWHrw8" style="color:var(--gold-deep)">네이버 플레이스</a></p>
+      </div>
+    </div>
+    <p class="legal">표시 가격은 예상가입니다. 순도·중량·공임 감정 후 최종 확정 · 황금시대</p>
+  </footer>
+
+  <div class="sticky">
+    <a href="#calculator">계산기</a>
+    <button type="button" id="stickyConsult">일반 상담</button>
+    <button class="factory-btn shine" type="button" id="stickyFactory">공장 상담</button>
+    <a href="tel:050713453180">전화</a>
+  </div>
+
+  <div class="modal" id="modal" role="dialog" aria-modal="true">
+    <form class="sheet" id="consultForm">
+      <div class="sheet-h">
+        <div>
+          <h3 id="modalTitle" style="font-size:1.6rem">일반 상담</h3>
+          <p class="muted" id="modalDesc" style="margin:.35rem 0 0;font-size:13px">예상가는 참고입니다. 최종 금액은 매장 감정 후 확정됩니다.</p>
+        </div>
+        <button class="x" type="button" id="closeModal" aria-label="닫기">×</button>
+      </div>
+      <div class="form-fields">
+        <div class="chips" id="types"></div>
+        <p class="muted" id="estBox" style="display:none;border:1px solid var(--line);background:var(--cream);padding:8px 12px;border-radius:6px;font-variant-numeric:tabular-nums"></p>
+        <label class="field">이름<input name="name" required placeholder="김지수" /></label>
+        <label class="field" style="margin-top:12px">연락처<input name="phone" required inputmode="tel" placeholder="010-0000-0000" /></label>
+        <label class="field" style="margin-top:12px">방문 희망일<input name="visitDate" type="date" /></label>
+        <label class="field" style="margin-top:12px">메모 · 사진 설명<textarea name="message" id="msg" placeholder="중량, 순도, 원하는 사이즈를 적어주세요."></textarea></label>
+        <button class="btn full" type="submit" style="margin-top:16px">상담 요청 보내기</button>
+      </div>
+      <div class="ok">
+        <p class="muted" style="background:var(--paper);padding:12px 16px;border-radius:6px">요청이 이 기기에 저장되었습니다. 지금 전화하거나 문자로 이어가시면 더 빠릅니다.</p>
+        <div class="row">
+          <a class="btn btn-ink" href="tel:050713453180">전화</a>
+          <a class="btn btn-cream" href="sms:050713453180">문자</a>
+        </div>
+        <button class="btn btn-ghost full" type="button" id="closeModal2">닫기</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    const DON = 3.75;
+    const RATES = {
+      gold24Buy: 830000, gold24Sell: 706000, gold18Sell: 520000, gold14Sell: 405000,
+      platinumSell: 271000, silverSell: 10200,
+      jewelryFactor: 0.97, goldbarFactor: 1, dentalFactor: 0.9,
+      labor14: 22000, labor18: 26000, labor24: 8000,
+      updatedAt: "2026-09-12 10:00", prevBuy: 841000, prevSell: 716000
+    };
+    const PURITY = { "24K": 0.999, "18K": 0.75, "14K": 0.585 };
+    const KARATS = [{id:"24K",label:"24K 순금"},{id:"18K",label:"18K"},{id:"14K",label:"14K"},{id:"unknown",label:"모름"}];
+    const ITEMS = [{id:"ring",label:"반지"},{id:"necklace",label:"목걸이"},{id:"bracelet",label:"팔찌"},{id:"baby",label:"돌반지"},{id:"goldbar",label:"골드바"},{id:"dental",label:"금니"},{id:"other",label:"기타"}];
+    const PRODUCTS = [
+      {name:"클립 체인 목걸이", karat:"14K", grams:2.4, labor:48000, lead:"2–4일", image:"products/necklace-clip.jpg"},
+      {name:"심플 커플링", karat:"18K", grams:5.6, labor:120000, lead:"5–7일", image:"products/couple-bands.jpg"},
+      {name:"순금 돌반지", karat:"24K", grams:3.75, labor:28000, lead:"당일–2일", image:"products/baby-ring.jpg"},
+      {name:"꼬임 반지", karat:"18K", grams:2.1, labor:72000, lead:"4–6일", image:"products/twist-ring.jpg"},
+      {name:"하트 펜던트", karat:"14K", grams:1.35, labor:42000, lead:"2–3일", image:"products/heart-pendant.jpg"},
+      {name:"순금 골드바 1돈", karat:"24K", grams:3.75, labor:12000, lead:"당일", image:"products/goldbar.jpg"},
+      {name:"스네이크 체인 팔찌", karat:"18K", grams:4.8, labor:88000, lead:"5–8일", image:"products/snake-bracelet.jpg"},
+      {name:"원터치 후프 귀걸이", karat:"14K", grams:1.1, labor:38000, lead:"2–4일", image:"products/hoops.jpg"},
+      {name:"사틴 웨딩밴드", karat:"18K", grams:3.2, labor:96000, lead:"7–10일", image:"products/wedding-band.jpg"},
+      {name:"순금 행운 열쇠", karat:"24K", grams:1.875, labor:22000, lead:"당일–2일", image:"products/lucky-key.jpg"},
+      {name:"레이어드 팔찌", karat:"14K", grams:3.1, labor:64000, lead:"4–6일", image:"products/layered-bracelet.jpg"},
+      {name:"솔리테어 반지", karat:"18K", grams:2.4, labor:180000, lead:"10–14일", image:"products/solitaire.jpg"}
+    ];
+
+    const won = n => Math.round(n).toLocaleString("ko-KR") + "원";
+    const wonS = n => Math.round(n).toLocaleString("ko-KR");
+    function gramsToDon(g){ return g / DON; }
+    function itemFactor(item){
+      if (item === "goldbar") return RATES.goldbarFactor;
+      if (item === "dental") return RATES.dentalFactor;
+      return RATES.jewelryFactor;
+    }
+    function sellPerDon(k){
+      if (k === "24K") return RATES.gold24Sell;
+      if (k === "14K") return RATES.gold14Sell;
+      return RATES.gold18Sell;
+    }
+    function estimateSell(karat, grams, item){
+      const k = karat === "unknown" ? "18K" : karat;
+      const don = gramsToDon(grams);
+      const perDon = sellPerDon(karat);
+      const factor = itemFactor(item);
+      const purity = PURITY[k];
+      return {
+        amount: Math.round(perDon * don * factor),
+        karatLabel: karat === "unknown" ? "18K 가정" : karat,
+        grams, don, perDon, factor, fine: grams * purity
+      };
+    }
+    function estimateBuy(karat, grams, labor){
+      const purity = PURITY[karat];
+      const material = Math.round(RATES.gold24Buy * gramsToDon(grams) * purity);
+      const sub = material + labor;
+      const vat = Math.round(sub * 0.1);
+      return { material, labor, vat, total: sub + vat };
+    }
+    function defaultLabor(karat, grams){
+      const per = karat === "24K" ? RATES.labor24 : karat === "18K" ? RATES.labor18 : RATES.labor14;
+      return Math.round(per * Math.max(grams, 0.8));
+    }
+    function delta(d){
+      if (!d) return "보합";
+      const abs = Math.abs(d).toLocaleString("ko-KR");
+      return d > 0 ? "▲ " + abs + "원" : "▼ " + abs + "원";
+    }
+
+    const state = { mode: "sell", karat: "18K", unit: "g", item: "ring" };
+
+    function renderBoard(){
+      const buyD = RATES.gold24Buy - RATES.prevBuy;
+      const sellD = RATES.gold24Sell - RATES.prevSell;
+      const rows = [
+        ["순금 24K", RATES.gold24Buy, RATES.gold24Sell],
+        ["18K", Math.round(RATES.gold24Buy * 0.75), RATES.gold18Sell],
+        ["14K", Math.round(RATES.gold24Buy * 0.585), RATES.gold14Sell],
+        ["백금", null, RATES.platinumSell],
+        ["은", null, RATES.silverSell]
+      ];
+      document.getElementById("priceBoard").innerHTML =
+        `<p class="eyebrow">TODAY · 1돈(3.75g)</p>
+         <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:12px">
+           <h2>오늘 금값</h2>
+           <p class="muted" style="text-align:right;font-size:12px;margin:0">매장 적용가<br>${RATES.updatedAt}</p>
+         </div>
+         <p class="big">${won(RATES.gold24Buy)}</p>
+         <p class="delta">순금 살 때 · ${delta(buyD)} · 팔 때 ${wonS(RATES.gold24Sell)}원 ${delta(sellD)}</p>
+         <div class="grid3"><span>구분</span><span>살 때</span><span>팔 때</span></div>
+         ${rows.map(r => `<div class="rate"><span>${r[0]}</span><span>${r[1] ? wonS(r[1]) : "제품가"}</span><span>${wonS(r[2])}</span></div>`).join("")}
+         <p class="muted" style="font-size:12px;margin-top:12px">18K·14K 살 때는 재료비+공임+부가세가 붙는 제품가입니다. 최종가는 감정 후 확정됩니다.</p>`;
+      document.getElementById("heroBuy").textContent = won(RATES.gold24Buy);
+    }
+
+    function chips(el, list, key){
+      el.innerHTML = list.map(x => `<button type="button" class="chip${state[key]===x.id?" on":""}" data-set="${key}" data-v="${x.id}">${x.label}</button>`).join("");
+    }
+
+    function renderCalc(){
+      chips(document.getElementById("karats"), KARATS, "karat");
+      chips(document.getElementById("items"), ITEMS, "item");
+      document.querySelectorAll("[data-set=mode]").forEach(b => b.classList.toggle("on", b.dataset.v === state.mode));
+      document.querySelectorAll("[data-set=unit]").forEach(b => b.classList.toggle("on", b.dataset.v === state.unit));
+      document.getElementById("itemWrap").style.display = state.mode === "sell" ? "" : "none";
+      const n = Number(document.getElementById("weight").value);
+      const grams = !Number.isFinite(n) || n <= 0 ? 0 : (state.unit === "don" ? n * DON : n);
+      const buyK = state.karat === "unknown" ? "18K" : state.karat;
+      const sell = estimateSell(state.karat, grams, state.item);
+      const buy = estimateBuy(buyK, grams, defaultLabor(buyK, grams));
+      const result = state.mode === "sell" ? sell.amount : buy.total;
+      document.getElementById("quoteLabel").textContent = state.mode === "sell" ? "예상 매입가" : "예상 제작가";
+      document.getElementById("quoteValue").textContent = grams > 0 ? won(result) : "—";
+      document.getElementById("consultCalc").disabled = grams <= 0;
+      const rows = grams > 0
+        ? (state.mode === "sell"
+          ? [["적용 순도", sell.karatLabel],["중량", sell.grams.toFixed(2)+"g · "+sell.don.toFixed(3)+"돈"],["1돈 매입가", won(sell.perDon)],["품목 보정", Math.round(sell.factor*100)+"%"],["순금 환산", sell.fine.toFixed(2)+"g"]]
+          : [["재료비", won(buy.material)],["공임", won(buy.labor)],["부가세 10%", won(buy.vat)],["합계", won(buy.total)]])
+        : [];
+      document.getElementById("quoteRows").innerHTML = rows.map(r => `<div><dt>${r[0]}</dt><dd>${r[1]}</dd></div>`).join("");
+      window.__estimate = grams > 0
+        ? (state.mode === "sell"
+          ? `예상 매입가 ${won(sell.amount)} · ${sell.karatLabel} ${grams.toFixed(2)}g`
+          : `예상 구매가 ${won(buy.total)} · ${buyK} ${grams.toFixed(2)}g`)
+        : "";
+      window.__consultType = state.mode === "sell" ? "sell" : "custom";
+    }
+
+    function renderProducts(){
+      document.getElementById("products").innerHTML = PRODUCTS.map(p => {
+        const price = estimateBuy(p.karat, p.grams, p.labor);
+        return `<a class="p-card" href="#consult" data-product="${p.name}" data-est="${won(price.total)}">
+          <div class="ph"><img src="${p.image}" alt="${p.name}" /></div>
+          <div class="meta">
+            <p>${p.karat} · ${p.grams}g</p>
+            <h3>${p.name}</h3>
+            <p class="price">${won(price.total)}</p>
+            <p class="sub">오늘 시세 예상가 · ${p.lead}</p>
+          </div>
+        </a>`;
+      }).join("");
+    }
+
+    const TYPES = [{id:"sell",label:"금 매입"},{id:"buy",label:"구매 견적"},{id:"custom",label:"맞춤 제작"},{id:"visit",label:"방문 예약"}];
+    const consult = { type: "visit", estimate: "", message: "" };
+    const typesEl = document.getElementById("types");
+    typesEl.innerHTML = TYPES.map(t => `<button type="button" class="chip" data-type="${t.id}">${t.label}</button>`).join("");
+
+    function paintTypes(){
+      typesEl.querySelectorAll("[data-type]").forEach(b => b.classList.toggle("on", b.dataset.type === consult.type));
+    }
+    function openModal(opts = {}){
+      consult.type = opts.type || "visit";
+      consult.estimate = opts.estimate || "";
+      consult.message = opts.message || "";
+      const modal = document.getElementById("modal");
+      const factory = consult.type === "custom";
+      document.getElementById("modalTitle").textContent = factory ? "공장 상담" : "일반 상담";
+      document.getElementById("modalDesc").textContent = factory
+        ? "공장직영 맞춤 제작입니다. 재료비+공임 기준으로 견적합니다."
+        : "예상가는 참고입니다. 최종 금액은 매장 감정 후 확정됩니다.";
+      const box = document.getElementById("estBox");
+      if (consult.estimate) { box.style.display = "block"; box.textContent = consult.estimate; }
+      else { box.style.display = "none"; }
+      document.getElementById("msg").value = consult.message;
+      modal.classList.remove("sent");
+      paintTypes();
+      modal.classList.add("open");
+    }
+    function closeModal(){ document.getElementById("modal").classList.remove("open", "sent"); }
+
+    document.addEventListener("click", (e) => {
+      const t = e.target.closest("[data-set]");
+      if (t) {
+        state[t.dataset.set] = t.dataset.v;
+        renderCalc();
+      }
+      const typeBtn = e.target.closest("[data-type]");
+      if (typeBtn) { consult.type = typeBtn.dataset.type; paintTypes(); }
+      const prod = e.target.closest("[data-product]");
+      if (prod) {
+        e.preventDefault();
+        openModal({ type: "buy", estimate: prod.dataset.product + " · " + prod.dataset.est, message: prod.dataset.product + " 견적 상담" });
+      }
+      if (e.target.id === "closeModal" || e.target.id === "closeModal2" || e.target.id === "modal") closeModal();
+      if (e.target.id === "consultCalc") openModal({ type: window.__consultType, estimate: window.__estimate, message: window.__estimate });
+      if (e.target.id === "factoryConsult" || e.target.id === "stickyFactory") openModal({ type: "custom", message: "공장 직영 맞춤 제작 상담 원합니다. 공장가로 견적 부탁합니다." });
+      if (e.target.id === "visitConsult" || e.target.id === "stickyConsult") openModal({ type: "visit" });
+      if (e.target.closest("[data-mode=sell]")) { state.mode = "sell"; renderCalc(); }
+    });
+    document.getElementById("weight").addEventListener("input", renderCalc);
+    document.getElementById("consultForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const row = {
+        name: fd.get("name"), phone: fd.get("phone"), type: consult.type,
+        message: fd.get("message"), visitDate: fd.get("visitDate"),
+        estimate: consult.estimate, at: new Date().toISOString()
+      };
+      const prev = JSON.parse(localStorage.getItem("hwanggeum-inquiries") || "[]");
+      localStorage.setItem("hwanggeum-inquiries", JSON.stringify([row, ...prev].slice(0, 80)));
+      document.getElementById("modal").classList.add("sent");
+    });
+
+    renderBoard();
+    renderCalc();
+    renderProducts();
+  </script>
+</body>
+</html>
