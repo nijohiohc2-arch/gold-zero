@@ -52,23 +52,18 @@
       display: flex; align-items: center; justify-content: space-between;
       max-width: 72rem; margin: 0 auto; padding: 0.85rem 1.25rem;
     }
-    .brand { text-decoration: none; color: var(--gold-bright); line-height: 1; min-width: 11.5rem; display: inline-flex; flex-direction: column; }
+    .brand { text-decoration: none; color: var(--gold-bright); line-height: 1; display: inline-flex; align-items: baseline; gap: 0.65rem; }
     .brand strong {
       font-family: var(--display); font-size: 1.55rem; font-weight: 500;
-      letter-spacing: 0.08em; display: block;
+      letter-spacing: 0.08em;
     }
     .brand em {
-      display: flex; align-items: center; gap: 8px; margin-top: 6px;
-      font-size: 8px; font-style: normal; letter-spacing: 0;
+      font-size: 8px; font-style: normal;
       color: color-mix(in oklab, var(--gold-bright) 55%, transparent);
     }
-    .brand em i {
-      display: block; flex: 1; height: 1px;
-      background: color-mix(in oklab, var(--gold-bright) 45%, transparent);
-    }
     .brand b {
-      display: block; margin-top: 6px; font-family: var(--display);
-      font-size: 1.05rem; font-weight: 500; letter-spacing: 0.08em;
+      font-family: var(--display); font-size: 1.05rem; font-weight: 500;
+      letter-spacing: 0.08em;
       color: color-mix(in oklab, var(--gold-bright) 85%, transparent);
     }
     nav {
@@ -284,7 +279,7 @@
     <div class="head">
       <a class="brand" href="#top">
         <strong>천호황금시대</strong>
-        <em><i></i>◆<i></i></em>
+        <em>◆</em>
         <b>공장직접운영</b>
       </a>
       <nav>
