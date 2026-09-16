@@ -1,6 +1,6 @@
 export const SHOP = {
-  name: "황금시대",
-  nameEn: "HWANGGEUM SIDAE",
+  name: "천호황금시대",
+  nameEn: "CHEONHO HWANGGEUM SIDAE",
   tagline: "공장에서 매장까지, 오늘의 금값으로 투명하게",
   phone: "0507-1345-3180",
   phoneHref: "tel:050713453180",
@@ -9,7 +9,7 @@ export const SHOP = {
   addressLine2: "천호역 10번 출구에서 30m",
   hours: "매일 10:00 – 19:00",
   hoursNote: "시세·재고는 방문 감정 기준",
-  parking: "매장 앞 단기 주차 가능 · 방문 전 연락 권장",
+  parking: "천호 공영 주차장 이용",
   naverPlace: "https://naver.me/GOhWHrw8",
   naverMap: "https://map.naver.com/p/entry/place/1912557373",
   kakaoDefault: "",

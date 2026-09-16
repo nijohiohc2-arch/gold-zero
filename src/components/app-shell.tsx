@@ -3,11 +3,30 @@ import { useEffect, useMemo } from "react";
 import { ConsultProvider } from "@/components/consult-context";
 import { openConsultNow } from "@/components/consult-native";
 import { SiteFooter, SiteHeader, StickyCta } from "@/components/site-chrome";
+import { fetchLiveGold } from "@/lib/live-gold";
 import { useShopStore } from "@/lib/store";
+
+async function refreshLiveGold() {
+  try {
+    const live = await fetchLiveGold();
+    useShopStore.getState().applyLiveRates(live);
+  } catch {
+    /* keep last rates */
+  }
+}
 
 export function AppShell() {
   useEffect(() => {
-    void useShopStore.persist.rehydrate();
+    let stop = false;
+    void (async () => {
+      await useShopStore.persist.rehydrate();
+      if (!stop) await refreshLiveGold();
+    })();
+    const id = window.setInterval(refreshLiveGold, 30_000);
+    return () => {
+      stop = true;
+      window.clearInterval(id);
+    };
   }, []);
 
   const value = useMemo(

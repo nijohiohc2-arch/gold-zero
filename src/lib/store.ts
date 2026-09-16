@@ -19,7 +19,9 @@ type ShopState = {
   rates: Rates;
   kakaoUrl: string;
   inquiries: Inquiry[];
+  live: boolean;
   setRates: (rates: Rates) => void;
+  applyLiveRates: (live: Partial<Rates>) => void;
   setKakaoUrl: (url: string) => void;
   addInquiry: (inquiry: Omit<Inquiry, "id" | "createdAt">) => Inquiry;
 };
@@ -30,7 +32,18 @@ export const useShopStore = create<ShopState>()(
       rates: DEFAULT_RATES,
       kakaoUrl: SHOP.kakaoDefault,
       inquiries: [],
-      setRates: (rates) => set({ rates }),
+      live: false,
+      setRates: (rates) => set({ rates, live: false }),
+      applyLiveRates: (liveRates) =>
+        set((s) => ({
+          live: true,
+          rates: {
+            ...s.rates,
+            ...liveRates,
+            prevGold24Buy: s.live ? s.rates.prevGold24Buy : s.rates.gold24Buy,
+            prevGold24Sell: s.live ? s.rates.prevGold24Sell : s.rates.gold24Sell,
+          },
+        })),
       setKakaoUrl: (kakaoUrl) => set({ kakaoUrl }),
       addInquiry: (inquiry) => {
         const row: Inquiry = {

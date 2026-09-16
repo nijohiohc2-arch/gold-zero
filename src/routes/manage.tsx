@@ -43,7 +43,7 @@ function ManagePage() {
       <p className="text-xs tracking-[0.2em] text-gold-deep">STORE</p>
       <h1 className="mt-2 font-display text-4xl">오늘의 시세 관리</h1>
       <p className="mt-3 text-sm text-muted">
-        아침마다 숫자만 바꾸면 계산기와 상품가가 함께 바뀝니다. 이 기기에 저장됩니다.
+        순금 시세는 30초마다 국제 금값으로 자동 갱신됩니다. 보정값·공임만 여기서 바꾸면 됩니다.
       </p>
 
       <form className="mt-8 space-y-4 rounded-lg border border-line bg-cream p-5" onSubmit={save}>

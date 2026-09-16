@@ -1,51 +1,86 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Calculator, Factory, MessageCircle, Phone } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { SHOP } from "@/lib/shop";
 import { cn } from "@/lib/utils";
 
+function NavLinks({ pathname, light }: { pathname: string; light?: boolean }) {
+  const idle = light ? "text-ivory/80 hover:text-gold-bright" : "text-ivory/80 hover:text-gold-bright";
+  const on = "text-gold-bright";
+  return (
+    <>
+      <Link to="/" className={cn("text-sm", pathname === "/" ? on : idle)}>
+        홈
+      </Link>
+      <a href="/#calculator" className={cn("text-sm", idle)}>
+        금값 계산
+      </a>
+      <Link to="/sell" className={cn("text-sm", pathname === "/sell" ? on : idle)}>
+        금 매입
+      </Link>
+      <Link to="/shop" className={cn("text-sm", pathname.startsWith("/shop") ? on : idle)}>
+        구매
+      </Link>
+      <Link to="/visit" className={cn("text-sm", pathname === "/visit" ? on : idle)}>
+        방문
+      </Link>
+      <a
+        href={SHOP.phoneHref}
+        className="inline-flex h-9 items-center rounded-md border border-gold-bright/40 px-3 text-sm text-gold-bright"
+      >
+        {SHOP.phone}
+      </a>
+    </>
+  );
+}
+
 export function SiteHeader() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const photoRef = useRef<HTMLDivElement>(null);
+  const [compact, setCompact] = useState(false);
+
+  useEffect(() => {
+    const el = photoRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => setCompact(!entry.isIntersecting), {
+      threshold: 0.15,
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
-    <header className="sticky top-0 z-40 border-b border-line/80 bg-ivory/92 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:h-[4.25rem] sm:px-6">
-        <Link to="/" className="flex flex-col leading-none">
-          <span className="font-display text-2xl tracking-tight text-ink">{SHOP.name}</span>
-          <span className="mt-0.5 text-[10px] tracking-[0.22em] text-gold-deep">{SHOP.nameEn}</span>
-        </Link>
-        <nav className="hidden items-center gap-6 md:flex">
-          <Link to="/" className={cn("text-sm hover:text-ink", pathname === "/" ? "text-ink" : "text-ink-soft")}>
-            홈
-          </Link>
-          <a href="/#calculator" className="text-sm text-ink-soft hover:text-ink">
-            금값 계산
-          </a>
-          <Link
-            to="/sell"
-            className={cn("text-sm hover:text-ink", pathname === "/sell" ? "text-ink" : "text-ink-soft")}
-          >
-            금 매입
-          </Link>
-          <Link
-            to="/shop"
-            className={cn("text-sm hover:text-ink", pathname.startsWith("/shop") ? "text-ink" : "text-ink-soft")}
-          >
-            구매
-          </Link>
-          <Link
-            to="/visit"
-            className={cn("text-sm hover:text-ink", pathname === "/visit" ? "text-ink" : "text-ink-soft")}
-          >
-            방문
-          </Link>
+    <>
+      <header ref={photoRef} className="relative bg-night">
+        <img
+          src="/brand.webp"
+          alt="천호황금시대"
+          width={1400}
+          height={788}
+          fetchPriority="high"
+          decoding="async"
+          className="mx-auto block h-auto w-full"
+        />
+        <nav className="absolute inset-x-0 top-0 hidden items-center justify-end gap-5 px-6 pt-4 md:flex">
+          <NavLinks pathname={pathname} light />
         </nav>
-        <a
-          href={SHOP.phoneHref}
-          className="hidden h-10 items-center rounded-md bg-ink px-3 text-sm text-ivory md:inline-flex"
-        >
-          {SHOP.phone}
-        </a>
+      </header>
+      <div
+        className={cn(
+          "fixed inset-x-0 top-0 z-50 border-b border-gold-bright/15 bg-night/96 backdrop-blur-md transition-transform duration-200",
+          compact ? "translate-y-0" : "-translate-y-full",
+        )}
+      >
+        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
+          <Link to="/" className="font-display text-[1.35rem] tracking-[0.06em] text-gold-bright">
+            천호황금시대
+          </Link>
+          <nav className="hidden items-center gap-5 md:flex">
+            <NavLinks pathname={pathname} />
+          </nav>
+        </div>
       </div>
-    </header>
+    </>
   );
 }
 

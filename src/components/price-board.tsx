@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 
 export function PriceBoard({ tone = "light" }: { tone?: "light" | "dark" }) {
   const rates = useShopStore((s) => s.rates);
+  const live = useShopStore((s) => s.live);
   const dark = tone === "dark";
   const buyDelta = rates.gold24Buy - rates.prevGold24Buy;
   const sellDelta = rates.gold24Sell - rates.prevGold24Sell;
@@ -26,7 +27,16 @@ export function PriceBoard({ tone = "light" }: { tone?: "light" | "dark" }) {
           <h2 className={cn("font-display text-2xl", dark ? "text-ivory" : "text-ink")}>오늘 금값</h2>
         </div>
         <p className={cn("text-right text-xs", dark ? "text-ivory/55" : "text-muted")}>
-          매장 적용가
+          <span className="inline-flex items-center justify-end gap-1.5">
+            {live ? (
+              <>
+                <span className="size-1.5 rounded-full bg-up" />
+                실시간
+              </>
+            ) : (
+              "매장 적용가"
+            )}
+          </span>
           <br />
           {rates.updatedAt}
         </p>
