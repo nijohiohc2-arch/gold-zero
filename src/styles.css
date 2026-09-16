@@ -319,6 +319,57 @@
   border: 1px solid var(--color-line);
   color: var(--color-ink);
 }
+.admin-input {
+  display: block;
+  width: 100%;
+  height: 2.75rem;
+  margin-top: 4px;
+  border: 1px solid var(--color-line);
+  background: var(--color-cream);
+  border-radius: 6px;
+  padding: 0 0.75rem;
+  font: inherit;
+  color: var(--color-ink);
+}
+.admin-submit {
+  width: 100%;
+  height: 3rem;
+  margin-top: 8px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--color-gold);
+  color: var(--color-ivory);
+  font-size: 15px;
+  font-weight: 500;
+}
+.admin-chip {
+  height: 2rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-line);
+  background: var(--color-cream);
+  color: var(--color-ink-soft);
+  padding: 0 0.75rem;
+  font-size: 12px;
+}
+.admin-chip.on {
+  background: var(--color-ink);
+  color: var(--color-ivory);
+  border-color: var(--color-ink);
+}
+.admin-ox {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-line);
+  background: var(--color-paper);
+  color: var(--color-muted);
+  font-weight: 600;
+}
+.admin-ox.on {
+  background: var(--color-gold);
+  color: var(--color-ivory);
+  border-color: var(--color-gold);
+}
 
 @media (prefers-reduced-motion: reduce) {
   *,

@@ -52,7 +52,13 @@
       display: flex; align-items: center; justify-content: space-between;
       max-width: 72rem; margin: 0 auto; padding: 0.85rem 1.25rem;
     }
+    .brand-row { display: flex; align-items: center; gap: 6px; }
     .brand { text-decoration: none; color: var(--gold-bright); line-height: 1; display: inline-flex; align-items: baseline; gap: 0.65rem; }
+    #goldBar {
+      width: 32px; height: 32px; border: 0; background: transparent;
+      padding: 0; opacity: .85; cursor: pointer;
+    }
+    #goldBar img { width: 22px; height: 22px; object-fit: contain; display: block; margin: auto; }
     .brand strong {
       font-family: var(--display); font-size: 1.55rem; font-weight: 500;
       letter-spacing: 0.08em;
@@ -280,16 +286,63 @@
     @media (prefers-reduced-motion: reduce) {
       * { animation: none !important; }
     }
+    .consult-dialog {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      margin: 0; width: min(32rem, calc(100vw - 2rem)); max-height: 84vh; overflow: auto;
+      border: 0; border-radius: 12px; padding: 1.35rem 1.4rem 1.5rem;
+      background: var(--ivory); color: var(--ink); font-family: var(--sans);
+      box-shadow: 0 20px 50px rgba(16,14,12,.28);
+    }
+    .consult-dialog::backdrop { background: rgba(16,14,12,.55); }
+    .consult-dialog h2 { margin: 0; font-family: var(--display); font-size: 1.6rem; font-weight: 500; }
+    .consult-h { display: flex; justify-content: space-between; gap: 0.75rem; margin-bottom: 1rem; }
+    .consult-h p { margin: 0.35rem 0 0; font-size: 13px; color: var(--muted); }
+    .consult-dialog label { display: block; font-size: 12px; color: var(--muted); margin-top: 12px; }
+    .consult-dialog input, .consult-dialog textarea {
+      display: block; width: 100%; margin-top: 4px; border: 1px solid var(--line);
+      background: var(--cream); border-radius: 6px; padding: 0 .75rem; font: inherit; color: var(--ink); height: 2.75rem;
+    }
+    .consult-submit {
+      width: 100%; height: 3rem; margin-top: 16px; border: 0; border-radius: 6px;
+      background: var(--gold); color: var(--ivory); font-size: 15px; font-weight: 500;
+    }
+    #admin-close { width: 2.75rem; height: 2.75rem; border: 0; background: transparent; font-size: 1.5rem; }
+    #admin-error { background: var(--paper); color: #8a3a32; padding: 8px 12px; border-radius: 6px; font-size: 13px; margin: 0 0 10px; }
+    .admin-toolbar { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
+    .admin-chip {
+      height: 2rem; border-radius: 999px; border: 1px solid var(--line);
+      background: var(--cream); color: var(--ink-soft); padding: 0 .75rem; font-size: 12px;
+    }
+    .admin-chip.on { background: var(--ink); color: var(--ivory); border-color: var(--ink); }
+    #admin-csv { margin-left: auto; font-size: 12px; background: none; border: 0; color: var(--gold-deep); text-decoration: underline; }
+    .admin-card { border: 1px solid var(--line); background: var(--cream); border-radius: 8px; padding: 12px; margin-bottom: 10px; }
+    .admin-card-h { display: flex; justify-content: space-between; gap: 8px; font-size: 14px; }
+    .admin-card-h span { font-size: 11px; color: var(--muted); }
+    .admin-type { font-size: 12px; color: var(--gold-deep); margin: 4px 0; }
+    .admin-card-a { display: flex; gap: 8px; align-items: center; margin-top: 8px; }
+    .admin-card-a input { flex: 1; height: 36px; }
+    .admin-ox {
+      width: 2.25rem; height: 2.25rem; border-radius: 6px; border: 1px solid var(--line);
+      background: var(--paper); color: var(--muted); font-weight: 600;
+    }
+    .admin-ox.on { background: var(--gold); color: var(--ivory); border-color: var(--gold); }
+    .admin-links { font-size: 12px; color: var(--muted); margin-top: 10px; }
+    .admin-links button { background: none; border: 0; text-decoration: underline; color: inherit; font: inherit; }
   </style>
 </head>
 <body>
   <header>
     <div class="head">
-      <a class="brand" href="#top">
-        <strong>천호황금시대</strong>
-        <em>◆</em>
-        <b>공장직접운영</b>
-      </a>
+      <div class="brand-row">
+        <a class="brand" href="#top">
+          <strong>천호황금시대</strong>
+          <em>◆</em>
+          <b>공장직접운영</b>
+        </a>
+        <button type="button" id="goldBar" data-open-admin aria-label="상담 내역">
+          <img src="gold-bars.png" alt="" />
+        </button>
+      </div>
       <nav>
         <a href="#calculator">금값 계산</a>
         <a href="#calculator" data-mode="sell">금 매입</a>
@@ -496,6 +549,7 @@
     </form>
   </div>
 
+  <script src="consult.js"></script>
   <script>
     const DON = 3.75;
     const RATES = {
@@ -694,13 +748,14 @@
     document.getElementById("consultForm").addEventListener("submit", (e) => {
       e.preventDefault();
       const fd = new FormData(e.target);
-      const row = {
-        name: fd.get("name"), phone: fd.get("phone"), type: consult.type,
-        message: fd.get("message"), visitDate: fd.get("visitDate"),
-        estimate: consult.estimate, at: new Date().toISOString()
-      };
-      const prev = JSON.parse(localStorage.getItem("hwanggeum-inquiries") || "[]");
-      localStorage.setItem("hwanggeum-inquiries", JSON.stringify([row, ...prev].slice(0, 80)));
+      if (window.addConsult) {
+        window.addConsult({
+          name: fd.get("name"),
+          phone: fd.get("phone"),
+          type: consult.type,
+          message: [fd.get("message"), consult.estimate].filter(Boolean).join(" · ")
+        });
+      }
       document.getElementById("modal").classList.add("sent");
     });
 
