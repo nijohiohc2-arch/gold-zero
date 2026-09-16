@@ -22,7 +22,7 @@ export function AppShell() {
       await useShopStore.persist.rehydrate();
       if (!stop) await refreshLiveGold();
     })();
-    const id = window.setInterval(refreshLiveGold, 30_000);
+    const id = window.setInterval(refreshLiveGold, 20_000);
     return () => {
       stop = true;
       window.clearInterval(id);

@@ -61,6 +61,36 @@ function pgliteBootstrapPlugin(): Plugin {
  * and returns the 302 / completion HTML. Deployed apps do not use the popup
  * (full-page OAuth redirect), so `apply: "serve"` is enough.
  */
+function goldApiPlugin(): Plugin {
+  async function handle(req: { url?: string }, res: { statusCode: number; setHeader: (k: string, v: string) => void; end: (s: string) => void }, next: () => void, load: () => Promise<{ loadSpotRates: () => Promise<unknown> }>) {
+    if ((req.url ?? "").split("?", 1)[0] !== "/api/gold") {
+      next();
+      return;
+    }
+    try {
+      const mod = await load();
+      const data = await mod.loadSpotRates();
+      res.setHeader("content-type", "application/json; charset=utf-8");
+      res.setHeader("cache-control", "no-store");
+      res.end(JSON.stringify(data));
+    } catch {
+      res.statusCode = 502;
+      res.setHeader("content-type", "application/json; charset=utf-8");
+      res.end(JSON.stringify({ error: "gold unavailable" }));
+    }
+  }
+  return {
+    name: "gold-api",
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        void handle(req, res, next, () =>
+          server.ssrLoadModule("/src/lib/gold-spot.ts") as Promise<{ loadSpotRates: () => Promise<unknown> }>,
+        );
+      });
+    },
+  };
+}
+
 function authPopupPlugin(): Plugin {
   return {
     name: "app-builder:auth-popup",
@@ -159,6 +189,7 @@ export default defineConfig(({ command, isPreview }) => ({
   resolve: { tsconfigPaths: true },
   plugins: [
     pgliteBootstrapPlugin(),
+    goldApiPlugin(),
     // Before tanstackStart so /auth/popup never falls through to the SPA.
     authPopupPlugin(),
     // Dev-only /__app-env, read by scripts/check-auth-invariant.mjs.
