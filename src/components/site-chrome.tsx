@@ -42,10 +42,11 @@ export function SiteHeader() {
           <span className="font-display text-[1.55rem] tracking-[0.06em] text-gold-bright sm:text-[1.75rem]">
             천호황금시대
           </span>
-          <span className="mt-1.5 flex items-center gap-2 text-[9px] tracking-[0.32em] text-gold-bright/70">
+          <span className="mt-1.5 flex items-center gap-2 text-[9px] tracking-[0.22em] text-gold-bright/75">
             <span className="h-px w-5 bg-gold-bright/45" />
             ◆
             <span className="h-px w-5 bg-gold-bright/45" />
+            공장운영
           </span>
         </Link>
         <nav className="hidden items-center gap-5 md:flex">
