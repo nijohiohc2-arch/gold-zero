@@ -38,15 +38,17 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-gold-bright/15 bg-night">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
-        <Link to="/" className="leading-none">
-          <span className="font-display text-[1.55rem] tracking-[0.06em] text-gold-bright sm:text-[1.75rem]">
+        <Link to="/" className="inline-flex min-w-[11.5rem] flex-col leading-none">
+          <span className="font-display text-[1.55rem] tracking-[0.08em] text-gold-bright sm:text-[1.75rem]">
             천호황금시대
           </span>
-          <span className="mt-1.5 flex items-center gap-2 text-[9px] tracking-[0.22em] text-gold-bright/75">
-            <span className="h-px w-5 bg-gold-bright/45" />
+          <span className="mt-1.5 flex items-center gap-2 text-[8px] text-gold-bright/55">
+            <span className="h-px flex-1 bg-gold-bright/45" />
             ◆
-            <span className="h-px w-5 bg-gold-bright/45" />
-            공장운영
+            <span className="h-px flex-1 bg-gold-bright/45" />
+          </span>
+          <span className="mt-1.5 font-display text-[1.05rem] tracking-[0.08em] text-gold-bright/85 sm:text-[1.15rem]">
+            공장직접운영
           </span>
         </Link>
         <nav className="hidden items-center gap-5 md:flex">
