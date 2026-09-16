@@ -83,11 +83,10 @@
       background: var(--night); color: var(--ivory); overflow: hidden;
       display: flex; align-items: flex-end;
     }
-    .hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 62% center; opacity: 0.55; }
-    @media (min-width: 640px) { .hero img { object-position: 68% center; } }
+    .hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: left center; transform: scaleX(-1); opacity: 0.55; }
     .hero-mask {
       position: absolute; inset: 0;
-      background: linear-gradient(90deg, var(--night) 0%, rgba(16,14,12,.8) 50%, rgba(16,14,12,.2) 100%);
+      background: linear-gradient(to top, var(--night) 0%, rgba(16,14,12,.55) 45%, rgba(16,14,12,.25) 100%);
     }
     .hero-copy { position: relative; padding: 7rem 0 4rem; }
     .kicker { font-size: 12px; letter-spacing: 0.28em; color: var(--gold); margin: 0; }
