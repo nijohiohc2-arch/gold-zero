@@ -22,7 +22,7 @@ function Home() {
   return (
     <main>
       <section className="relative isolate min-h-[88svh] overflow-hidden bg-night text-ivory">
-        <img src="/hero.jpg" alt="" className="absolute inset-0 size-full object-cover opacity-55" />
+        <img src="/hero.jpg" alt="" className="absolute inset-0 size-full object-cover object-[62%_center] opacity-55 sm:object-[68%_center]" />
         <div className="absolute inset-0 bg-linear-to-r from-night via-night/80 to-night/20" />
         <div className="relative mx-auto flex min-h-[88svh] max-w-6xl flex-col justify-end px-4 pb-16 pt-24 sm:px-6 sm:pb-20">
           <p className="text-xs tracking-[0.28em] text-gold">SONGPA · CHEONHO · FACTORY</p>

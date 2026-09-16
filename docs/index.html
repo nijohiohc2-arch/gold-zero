@@ -83,7 +83,8 @@
       background: var(--night); color: var(--ivory); overflow: hidden;
       display: flex; align-items: flex-end;
     }
-    .hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.55; }
+    .hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 62% center; opacity: 0.55; }
+    @media (min-width: 640px) { .hero img { object-position: 68% center; } }
     .hero-mask {
       position: absolute; inset: 0;
       background: linear-gradient(90deg, var(--night) 0%, rgba(16,14,12,.8) 50%, rgba(16,14,12,.2) 100%);
