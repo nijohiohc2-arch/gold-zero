@@ -21,8 +21,10 @@ function Home() {
 
   return (
     <main>
-      <section className="bg-night text-ivory">
-        <div className="mx-auto max-w-6xl px-4 pb-14 pt-8 sm:px-6 sm:pb-16 sm:pt-10">
+      <section className="relative isolate min-h-[88svh] overflow-hidden bg-night text-ivory">
+        <img src="/hero.jpg" alt="" className="absolute inset-0 size-full object-cover opacity-55" />
+        <div className="absolute inset-0 bg-linear-to-r from-night via-night/80 to-night/20" />
+        <div className="relative mx-auto flex min-h-[88svh] max-w-6xl flex-col justify-end px-4 pb-16 pt-24 sm:px-6 sm:pb-20">
           <p className="text-xs tracking-[0.28em] text-gold">SONGPA · CHEONHO · FACTORY</p>
           <div className="mt-4 flex flex-wrap gap-2">
             {["예물", "반지", "목걸이", "팔찌"].map((item) => (

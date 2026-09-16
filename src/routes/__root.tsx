@@ -20,7 +20,6 @@ export const Route = createRootRoute({
       { name: "theme-color", content: "#1A1612" },
     ],
     links: [
-      { rel: "preload", as: "image", href: "/brand.webp", type: "image/webp", fetchPriority: "high" },
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
       { rel: "stylesheet", href: appCss },
       { rel: "manifest", href: "/__grok/manifest.webmanifest" },

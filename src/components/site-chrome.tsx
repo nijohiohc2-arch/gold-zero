@@ -1,6 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Calculator, Factory, MessageCircle, Phone } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
 import { SHOP } from "@/lib/shop";
 import { cn } from "@/lib/utils";
 
@@ -36,51 +35,24 @@ function NavLinks({ pathname, light }: { pathname: string; light?: boolean }) {
 
 export function SiteHeader() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const photoRef = useRef<HTMLDivElement>(null);
-  const [compact, setCompact] = useState(false);
-
-  useEffect(() => {
-    const el = photoRef.current;
-    if (!el) return;
-    const io = new IntersectionObserver(([entry]) => setCompact(!entry.isIntersecting), {
-      threshold: 0.15,
-    });
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
   return (
-    <>
-      <header ref={photoRef} className="relative bg-night">
-        <img
-          src="/brand.webp"
-          alt="천호황금시대"
-          width={1400}
-          height={788}
-          fetchPriority="high"
-          decoding="async"
-          className="mx-auto block h-auto w-full"
-        />
-        <nav className="absolute inset-x-0 top-0 hidden items-center justify-end gap-5 px-6 pt-4 md:flex">
-          <NavLinks pathname={pathname} light />
-        </nav>
-      </header>
-      <div
-        className={cn(
-          "fixed inset-x-0 top-0 z-50 border-b border-gold-bright/15 bg-night/96 backdrop-blur-md transition-transform duration-200",
-          compact ? "translate-y-0" : "-translate-y-full",
-        )}
-      >
-        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
-          <Link to="/" className="font-display text-[1.35rem] tracking-[0.06em] text-gold-bright">
+    <header className="sticky top-0 z-50 border-b border-gold-bright/15 bg-night">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
+        <Link to="/" className="leading-none">
+          <span className="font-display text-[1.55rem] tracking-[0.06em] text-gold-bright sm:text-[1.75rem]">
             천호황금시대
-          </Link>
-          <nav className="hidden items-center gap-5 md:flex">
-            <NavLinks pathname={pathname} />
-          </nav>
-        </div>
+          </span>
+          <span className="mt-1.5 flex items-center gap-2 text-[9px] tracking-[0.32em] text-gold-bright/70">
+            <span className="h-px w-5 bg-gold-bright/45" />
+            ◆
+            <span className="h-px w-5 bg-gold-bright/45" />
+          </span>
+        </Link>
+        <nav className="hidden items-center gap-5 md:flex">
+          <NavLinks pathname={pathname} />
+        </nav>
       </div>
-    </>
+    </header>
   );
 }
 

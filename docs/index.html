@@ -42,26 +42,33 @@
     h1, h2, h3 { font-family: var(--display); font-weight: 500; text-wrap: balance; margin: 0; }
     p { text-wrap: pretty; }
     .wrap { max-width: 72rem; margin: 0 auto; padding: 0 1.25rem; }
-    .sample-bar {
-      background: var(--night);
-      color: var(--gold-bright);
-      text-align: center;
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      padding: 0.55rem 1rem;
-    }
+    .sample-bar { display: none; }
     header {
       position: sticky; top: 0; z-index: 40;
       background: var(--night);
+      border-bottom: 1px solid color-mix(in oklab, var(--gold-bright) 15%, transparent);
     }
-    .head { position: relative; }
-    .brand { display: block; }
-    .brand img { width: 100%; height: 10rem; object-fit: cover; object-position: center; }
-    @media (min-width: 640px) { .brand img { height: 13rem; } }
-    @media (min-width: 768px) { .brand img { height: 15rem; } }
+    .head {
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 72rem; margin: 0 auto; padding: 0.85rem 1.25rem;
+    }
+    .brand { text-decoration: none; color: var(--gold-bright); line-height: 1; }
+    .brand strong {
+      font-family: var(--display); font-size: 1.55rem; font-weight: 500;
+      letter-spacing: 0.06em; display: block;
+    }
+    .brand em {
+      display: flex; align-items: center; gap: 8px; margin-top: 7px;
+      font-size: 9px; font-style: normal; letter-spacing: 0.32em;
+      color: color-mix(in oklab, var(--gold-bright) 72%, transparent);
+    }
+    .brand em i {
+      display: block; width: 22px; height: 1px;
+      background: color-mix(in oklab, var(--gold-bright) 45%, transparent);
+    }
     nav {
-      display: none; position: absolute; top: 0; right: 0; left: 0;
-      justify-content: flex-end; gap: 1.5rem; padding: 1rem 1.5rem 0;
+      display: none; position: static; align-items: center;
+      justify-content: flex-end; gap: 1.25rem; padding: 0;
     }
     nav a { color: rgba(247,243,236,.8); text-decoration: none; font-size: 14px; }
     nav a:hover { color: var(--gold-bright); }
@@ -268,11 +275,11 @@
   </style>
 </head>
 <body>
-  <div class="sample-bar">천호황금시대 · 송파 천호 공장직영</div>
   <header>
     <div class="head">
       <a class="brand" href="#top">
-        <img src="brand.webp" alt="천호황금시대" width="1400" height="788" fetchpriority="high" />
+        <strong>천호황금시대</strong>
+        <em><i></i>◆<i></i></em>
       </a>
       <nav>
         <a href="#calculator">금값 계산</a>
@@ -486,8 +493,12 @@
       platinumSell: 271000, silverSell: 10200,
       jewelryFactor: 0.97, goldbarFactor: 1, dentalFactor: 0.9,
       labor14: 22000, labor18: 26000, labor24: 8000,
-      updatedAt: "2026-09-12 10:00", prevBuy: 841000, prevSell: 716000
+      updatedAt: "시세 불러오는 중", prevBuy: 830000, prevSell: 706000, live: false
     };
+    try {
+      const saved = JSON.parse(localStorage.getItem("hwanggeum-live") || "null");
+      if (saved && saved.gold24Buy) Object.assign(RATES, saved, { live: true });
+    } catch {}
     const PURITY = { "24K": 0.999, "18K": 0.75, "14K": 0.585 };
     const KARATS = [{id:"24K",label:"24K 순금"},{id:"18K",label:"18K"},{id:"14K",label:"14K"},{id:"unknown",label:"모름"}];
     const ITEMS = [{id:"ring",label:"반지"},{id:"necklace",label:"목걸이"},{id:"bracelet",label:"팔찌"},{id:"baby",label:"돌반지"},{id:"goldbar",label:"골드바"},{id:"dental",label:"금니"},{id:"other",label:"기타"}];
@@ -564,7 +575,7 @@
         `<p class="eyebrow">TODAY · 1돈(3.75g)</p>
          <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:12px">
            <h2>오늘 금값</h2>
-           <p class="muted" style="text-align:right;font-size:12px;margin:0">매장 적용가<br>${RATES.updatedAt}</p>
+           <p class="muted" style="text-align:right;font-size:12px;margin:0">${RATES.live ? "실시간" : "매장 적용가"}<br>${RATES.updatedAt}</p>
          </div>
          <p class="big">${won(RATES.gold24Buy)}</p>
          <p class="delta">순금 살 때 · ${delta(buyD)} · 팔 때 ${wonS(RATES.gold24Sell)}원 ${delta(sellD)}</p>
@@ -686,6 +697,47 @@
     renderBoard();
     renderCalc();
     renderProducts();
+
+    async function readJson(url){
+      const res = await fetch(url, { headers: { accept: "application/json" }, signal: AbortSignal.timeout(7000) });
+      if (!res.ok) throw new Error(url);
+      return res.json();
+    }
+    async function refreshLive(){
+      try {
+        const [xau, fx, xag, xpt] = await Promise.all([
+          readJson("https://api.gold-api.com/price/XAU"),
+          readJson("https://open.er-api.com/v6/latest/USD"),
+          readJson("https://api.gold-api.com/price/XAG").catch(() => null),
+          readJson("https://api.gold-api.com/price/XPT").catch(() => null)
+        ]);
+        const xauUsd = Number(xau && xau.price);
+        const usdKrw = Number(fx && fx.rates && fx.rates.KRW);
+        if (!xauUsd || !usdKrw) return;
+        const spotDon = (xauUsd * usdKrw / 31.1034768) * 3.75;
+        const r1k = n => Math.round(n / 1000) * 1000;
+        if (RATES.live) {
+          RATES.prevBuy = RATES.gold24Buy;
+          RATES.prevSell = RATES.gold24Sell;
+        }
+        RATES.gold24Buy = r1k(spotDon * 1.12);
+        RATES.gold24Sell = r1k(spotDon * 0.99);
+        RATES.gold18Sell = r1k(RATES.gold24Sell * 0.75);
+        RATES.gold14Sell = r1k(RATES.gold24Sell * 0.585);
+        const xagUsd = Number(xag && xag.price);
+        const xptUsd = Number(xpt && xpt.price);
+        if (xagUsd) RATES.silverSell = r1k((xagUsd * usdKrw / 31.1034768) * 3.75);
+        if (xptUsd) RATES.platinumSell = r1k((xptUsd * usdKrw / 31.1034768) * 3.75);
+        RATES.updatedAt = new Date().toLocaleString("sv-SE", { timeZone: "Asia/Seoul" }).replace("T", " ").slice(0, 19);
+        RATES.live = true;
+        localStorage.setItem("hwanggeum-live", JSON.stringify(RATES));
+        renderBoard();
+        renderCalc();
+        renderProducts();
+      } catch (e) {}
+    }
+    refreshLive();
+    setInterval(refreshLive, 30000);
   </script>
 </body>
 </html>
