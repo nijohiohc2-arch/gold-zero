@@ -43,8 +43,13 @@ function Home() {
             투명하게.
           </h1>
           <p className="mt-5 max-w-md text-sm leading-relaxed text-ivory/75 sm:text-base">
-            {SHOP.tagline}. 순금 1돈 살 때{" "}
-            <span className="tabular-nums text-ivory">{formatWon(rates.gold24Buy)}</span>
+            {SHOP.tagline}.
+          </p>
+          <p className="mt-3 flex items-baseline gap-3 text-sm text-ivory/75 sm:text-base">
+            <span>순금 1돈 살 때</span>
+            <span className="font-display text-2xl tabular-nums tracking-wide text-ivory sm:text-3xl">
+              {formatWon(rates.gold24Buy)}
+            </span>
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Button asChild size="lg">

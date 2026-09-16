@@ -120,6 +120,14 @@
       border-radius: 999px; padding: 4px 12px; font-size: 11px; letter-spacing: 0.14em;
     }
     .hero-custom { margin: 0.75rem 0 0; font-size: 14px; letter-spacing: 0.04em; color: var(--gold-bright); }
+    .hero-price {
+      display: flex; align-items: baseline; gap: 0.75rem;
+      margin: 0.75rem 0 0; font-size: 15px; color: rgba(247,243,236,.75);
+    }
+    .hero-price b {
+      font-family: var(--display); font-size: 1.75rem; font-weight: 500;
+      color: #fffaf3; letter-spacing: 0.04em;
+    }
     .shine { position: relative; overflow: hidden; }
     .shine::before {
       content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
@@ -305,7 +313,8 @@
       </div>
       <p class="hero-custom">브랜드 디자인 맞춤 가능</p>
       <h1>오늘 금값으로<br />투명하게.</h1>
-      <p>공장에서 매장까지, 오늘의 금값으로 투명하게. 순금 1돈 살 때 <b id="heroBuy" style="font-weight:500;color:#fffaf3">830,000원</b></p>
+      <p>공장에서 매장까지, 오늘의 금값으로 투명하게.</p>
+      <p class="hero-price">순금 1돈 살 때 <b id="heroBuy">830,000원</b></p>
       <div class="row">
         <a class="btn" href="#calculator">내 금 지금 얼마인지 계산</a>
         <a class="btn btn-cream" href="#shop">오늘 시세로 구매 견적</a>
