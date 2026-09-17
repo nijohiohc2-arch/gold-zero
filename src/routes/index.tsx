@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Factory, Scale, Sparkles } from "lucide-react";
 import type { ReactNode } from "react";
 import { Calculator } from "@/components/calculator";
-import { useConsult } from "@/components/consult-context";
+import { openConsultNow } from "@/components/consult-native";
 import { HotBadge, Spark } from "@/components/hot-badge";
 import { PriceBoard } from "@/components/price-board";
 import { ProductCard } from "@/components/product-card";
@@ -15,7 +15,6 @@ import { cn, formatWon } from "@/lib/utils";
 export const Route = createFileRoute("/")({ component: Home });
 
 function Home() {
-  const { openConsult } = useConsult();
   const rates = useShopStore((s) => s.rates);
   const featured = PRODUCTS.slice(0, 6);
 
@@ -55,8 +54,8 @@ function Home() {
             <Button asChild size="lg">
               <a href="#calculator">내 금 지금 얼마인지 계산</a>
             </Button>
-            <Button asChild size="lg" variant="cream">
-              <Link to="/shop">오늘 시세로 구매 견적</Link>
+            <Button size="lg" variant="cream" type="button" data-open-consult="buy" onClick={() => openConsultNow({ type: "buy", message: "오늘 시세로 구매 견적 원합니다." })}>
+              오늘 시세로 구매 견적
             </Button>
           </div>
         </div>
@@ -108,7 +107,7 @@ function Home() {
             </p>
             <Calculator
               onConsult={(payload) =>
-                openConsult({
+                openConsultNow({
                   type: payload.type,
                   message: payload.message,
                   estimate: payload.estimate,
@@ -136,7 +135,7 @@ function Home() {
         </div>
       </section>
 
-      <section id="factory" className="scroll-mt-24 bg-night text-ivory">
+      <section id="factory" className="scroll-mt-24 bg-night pb-24 text-ivory">
         <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:items-center">
           <div className="shine-sweep gold-border-glow relative overflow-hidden rounded-lg">
             <img
@@ -186,14 +185,20 @@ function Home() {
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button
                 size="lg"
-                className="shine-sweep border-0 bg-night text-gold-bright hover:bg-night"
+                className="relative z-10 shine-sweep border-0 bg-night text-gold-bright hover:bg-night"
                 data-open-consult="factory"
                 type="button"
+                onClick={() =>
+                  openConsultNow({
+                    type: "custom",
+                    message: "공장 직영 맞춤 제작 상담 원합니다. 공장가로 견적 부탁합니다.",
+                  })
+                }
               >
                 공장가 상담 받기
               </Button>
-              <Button asChild size="lg" variant="cream">
-                <Link to="/visit">매장 방문 예약</Link>
+              <Button size="lg" variant="cream" type="button" data-open-consult="visit" onClick={() => openConsultNow({ type: "visit" })}>
+                매장 방문 예약
               </Button>
             </div>
           </div>

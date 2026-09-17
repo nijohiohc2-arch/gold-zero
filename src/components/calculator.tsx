@@ -184,10 +184,14 @@ export function Calculator({
       <Button
         className="mt-5 w-full"
         size="lg"
+        type="button"
         disabled={grams <= 0}
+        data-open-consult={mode === "sell" ? "sell" : "buy"}
+        data-estimate={estimateLine}
+        data-message={estimateLine}
         onClick={() =>
           onConsult({
-            type: mode === "sell" ? "sell" : "custom",
+            type: mode === "sell" ? "sell" : "buy",
             estimate: estimateLine,
             message: estimateLine,
           })

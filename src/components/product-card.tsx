@@ -33,6 +33,16 @@ export function ProductCard({ product }: { product: Product }) {
         <h3 className="mt-1 font-display text-xl text-ink">{product.name}</h3>
         <p className="mt-2 font-medium tabular-nums text-ink">{formatWon(price.total)}</p>
         <p className="mt-1 text-xs text-muted">오늘 시세 예상가 · {product.leadDays}</p>
+        <span
+          role="button"
+          tabIndex={0}
+          data-open-consult="buy"
+          data-estimate={`${product.name} · ${formatWon(price.total)}`}
+          data-message={`${product.name} 오늘 시세 견적 상담`}
+          className="mt-3 inline-flex h-10 w-full items-center justify-center rounded-md bg-gold text-sm text-ivory"
+        >
+          견적 상담
+        </span>
       </div>
     </Link>
   );

@@ -75,6 +75,9 @@ function SellPage() {
         <Button
           className="mt-8"
           size="lg"
+          type="button"
+          data-open-consult="sell"
+          data-message="금 매입 상담 원합니다."
           onClick={() => openConsult({ type: "sell", message: "금 매입 상담 원합니다." })}
         >
           사진 보내고 정확한 견적

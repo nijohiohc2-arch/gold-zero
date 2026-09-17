@@ -64,6 +64,10 @@ function ProductPage() {
           <Button
             size="lg"
             className="flex-1"
+            type="button"
+            data-open-consult="buy"
+            data-estimate={estimate}
+            data-message={estimate}
             onClick={() =>
               openConsult({
                 type: "buy",
@@ -79,6 +83,9 @@ function ProductPage() {
             size="lg"
             variant="outline"
             className="flex-1"
+            type="button"
+            data-open-consult="visit"
+            data-message={`${product.name} 실물 보고 싶습니다.`}
             onClick={() =>
               openConsult({
                 type: "visit",

@@ -1,6 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { Calculator, Factory, MessageCircle, Phone } from "lucide-react";
 import { GoldBarButton } from "@/components/admin-consult";
+import { openConsultNow } from "@/components/consult-native";
 import { SHOP } from "@/lib/shop";
 import { cn } from "@/lib/utils";
 
@@ -103,6 +104,7 @@ export function StickyCta() {
         <button
           type="button"
           data-open-consult="general"
+          onClick={() => openConsultNow({ type: "visit" })}
           className="flex h-14 flex-col items-center justify-center gap-0.5 text-[11px] text-ink"
         >
           <MessageCircle className="size-4" />
@@ -111,6 +113,12 @@ export function StickyCta() {
         <button
           type="button"
           data-open-consult="factory"
+          onClick={() =>
+            openConsultNow({
+              type: "custom",
+              message: "공장 직영 맞춤 제작 상담 원합니다. 공장가로 견적 부탁합니다.",
+            })
+          }
           className="shine-sweep flex h-14 flex-col items-center justify-center gap-0.5 bg-night text-[11px] text-gold-bright"
         >
           <Factory className="relative z-10 size-4" />

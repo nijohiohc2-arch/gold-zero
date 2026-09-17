@@ -170,17 +170,23 @@
   animation: spark-pulse 1.8s ease-in-out infinite;
 }
 
-.consult-dialog {
+.consult-overlay {
+  display: none;
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  margin: 0;
+  inset: 0;
+  z-index: 90;
+  place-items: center;
+  padding: 16px;
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+  background: rgba(16, 14, 12, 0.55);
+}
+.consult-overlay.is-open {
+  display: grid;
+}
+.consult-sheet {
   width: min(32rem, calc(100vw - 2rem));
-  max-width: min(32rem, calc(100vw - 2rem));
-  max-height: 84vh;
+  max-height: min(86vh, calc(100dvh - 2rem));
   overflow: auto;
-  border: 0;
   border-radius: 12px;
   padding: 1.35rem 1.4rem 1.5rem;
   background: var(--color-ivory);
@@ -188,10 +194,7 @@
   font-family: var(--font-sans);
   box-shadow: 0 20px 50px rgba(16, 14, 12, 0.28);
 }
-.consult-dialog::backdrop {
-  background: rgba(16, 14, 12, 0.55);
-}
-.consult-dialog h2 {
+.consult-sheet h2 {
   margin: 0;
   font-family: var(--font-display);
   font-size: 1.6rem;
@@ -247,14 +250,14 @@
   font-variant-numeric: tabular-nums;
   color: var(--color-ink-soft);
 }
-.consult-dialog label {
+.consult-sheet label {
   display: block;
   font-size: 12px;
   color: var(--color-muted);
   margin-top: 12px;
 }
-.consult-dialog input,
-.consult-dialog textarea {
+.consult-sheet input,
+.consult-sheet textarea {
   display: block;
   width: 100%;
   margin-top: 4px;
@@ -265,10 +268,10 @@
   font: inherit;
   color: var(--color-ink);
 }
-.consult-dialog input {
+.consult-sheet input {
   height: 2.75rem;
 }
-.consult-dialog textarea {
+.consult-sheet textarea {
   min-height: 5.5rem;
   padding: 0.7rem 0.75rem;
   resize: vertical;

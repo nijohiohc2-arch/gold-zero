@@ -122,9 +122,9 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
   }
 
   return (
-    <div className="fixed inset-0 z-[80]" role="dialog" aria-modal="true">
+    <div className="fixed inset-0 z-[80] flex items-center justify-center p-4" role="dialog" aria-modal="true">
       <button type="button" className="absolute inset-0 bg-night/55" aria-label="닫기" onClick={onClose} />
-      <div className="absolute inset-x-4 top-[7%] z-10 mx-auto max-h-[86vh] w-full max-w-lg overflow-y-auto rounded-xl bg-ivory p-5 shadow-xl sm:p-6">
+      <div className="relative z-10 max-h-[86vh] w-full max-w-lg overflow-y-auto rounded-xl bg-ivory p-5 shadow-xl sm:p-6">
         <div className="mb-4 flex items-start justify-between gap-3">
           <div>
             <h2 className="font-display text-2xl text-ink">

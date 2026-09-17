@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { MapPin, Phone, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { openConsultNow } from "@/components/consult-native";
 import { SHOP } from "@/lib/shop";
 
 export const Route = createFileRoute("/visit")({ component: VisitPage });
@@ -42,7 +43,7 @@ function VisitPage() {
         </ul>
         <p className="mt-6 text-sm text-muted">{SHOP.parking}</p>
         <div className="mt-8 flex flex-col gap-3">
-          <Button size="lg" type="button" data-open-consult="general">
+          <Button size="lg" type="button" data-open-consult="general" onClick={() => openConsultNow({ type: "visit" })}>
             방문 예약하기
           </Button>
           <Button asChild size="lg" variant="outline">

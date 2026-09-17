@@ -31,7 +31,6 @@ export const Route = createRootRoute({
         href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Noto+Sans+KR:wght@400;500;600&family=Noto+Serif+KR:wght@500;600&display=swap",
       },
     ],
-    scripts: [{ src: "/consult.js" }],
   }),
   component: RootDocument,
 });
