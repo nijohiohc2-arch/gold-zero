@@ -11,6 +11,15 @@
   function digits(v) {
     return String(v || "").replace(/\D/g, "");
   }
+
+
+  function esc(v) {
+    return String(v || "")
+      .replace(/&/g, "\u0026amp;")
+      .replace(/\"/g, "\u0026quot;")
+      .replace(/</g, "\u0026lt;")
+      .replace(/>/g, "\u0026gt;");
+  }
   function todayKey() {
     const d = new Date();
     return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
@@ -264,7 +273,7 @@
         ${r.message ? `<p>${r.message}</p>` : ""}
         <div class="admin-card-a">
           <button type="button" class="admin-ox${r.done ? " on" : ""}" data-ox="${r.id}">${r.done ? "O" : "X"}</button>
-          <input data-review="${r.id}" value="${String(r.review || "").replace(/"/g, """)}" placeholder="상담 후기" />
+          <input data-review="${r.id}" value="${esc(r.review)}" placeholder="상담 후기" />
           <button type="button" data-del="${r.id}">삭제</button>
         </div>
       </article>`,

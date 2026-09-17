@@ -52,11 +52,11 @@
       display: flex; align-items: center; justify-content: space-between;
       max-width: 72rem; margin: 0 auto; padding: 0.85rem 1.25rem;
     }
-    .brand-row { display: flex; align-items: center; gap: 6px; }
-    .brand { text-decoration: none; color: var(--gold-bright); line-height: 1; display: inline-flex; align-items: baseline; gap: 0.65rem; }
+    .brand-row { display: flex; align-items: center; gap: 4px; min-width: 0; }
+    .brand { text-decoration: none; color: var(--gold-bright); line-height: 1; display: inline-flex; align-items: baseline; gap: 0.55rem; min-width: 0; }
     #goldBar {
-      width: 32px; height: 32px; border: 0; background: transparent;
-      padding: 0; opacity: .85; cursor: pointer;
+      position: relative; z-index: 8; flex: 0 0 44px; width: 44px; height: 44px;
+      border: 0; background: transparent; padding: 0; opacity: .95; cursor: pointer;
     }
     #goldBar img { width: 22px; height: 22px; object-fit: contain; display: block; margin: auto; }
     .brand strong {
@@ -141,11 +141,10 @@
       background: linear-gradient(180deg, color-mix(in oklab, white 16%, transparent), transparent 22%);
     }
     .shine::after {
-      content: ""; position: absolute; top: -30%; bottom: -30%; width: 38%; z-index: 2; pointer-events: none;
-      mix-blend-mode: screen;
-      background: linear-gradient(100deg, transparent 0%, transparent 32%, color-mix(in oklab, var(--gold-bright) 18%, transparent) 44%, color-mix(in oklab, white 72%, transparent) 50%, color-mix(in oklab, var(--gold-bright) 32%, transparent) 56%, transparent 70%);
-      transform: translateX(-140%) skewX(-20deg);
-      animation: glass 3.6s ease-in-out infinite;
+      content: ""; position: absolute; top: -30%; bottom: -30%; width: 42%; z-index: 2; pointer-events: none;
+      background: linear-gradient(100deg, transparent 0%, transparent 28%, rgba(234,215,162,.28) 42%, rgba(255,246,216,.72) 50%, rgba(234,215,162,.38) 58%, transparent 72%);
+      transform: translateX(-140%) skewX(-18deg);
+      animation: glass 2.8s ease-in-out infinite;
     }
     @keyframes glass {
       0%, 14% { transform: translateX(-140%) skewX(-20deg); }
@@ -153,7 +152,7 @@
     }
     .hot-card {
       position: relative; background: var(--night); color: var(--ivory); border: 0;
-      box-shadow: 0 0 0 1px color-mix(in oklab, var(--gold-bright) 88%, white);
+      box-shadow: 0 0 0 1px #ead7a2, 0 0 18px rgba(234,215,162,.35);
       overflow: hidden;
     }
     .hot-card h2, .hot-card svg { color: var(--gold-bright); }
@@ -161,9 +160,11 @@
     .hot {
       display: inline-flex; height: 1.5rem; align-items: center; border-radius: 999px;
       padding: 0 0.65rem; font-size: 10px; font-weight: 600; letter-spacing: 0.18em; color: var(--night);
-      background-image: linear-gradient(110deg, var(--gold-deep) 0%, var(--gold-bright) 42%, #fff6d8 50%, var(--gold-bright) 58%, var(--gold-deep) 100%);
+      background-color: #ead7a2;
+      background-image: linear-gradient(110deg, #7a5e38 0%, #ead7a2 40%, #fff6d8 50%, #ead7a2 60%, #7a5e38 100%);
       background-size: 220% 100%;
-      animation: shimmer 2.6s linear infinite;
+      animation: shimmer 2.2s linear infinite;
+      box-shadow: 0 0 10px rgba(234,215,162,.7);
     }
     @keyframes shimmer { to { background-position: 220% 50%; } }
     .spark {
@@ -266,15 +267,22 @@
     .sticky .factory-btn { background: var(--night); color: var(--gold-bright); }
     .modal {
       position: fixed; inset: 0; z-index: 60; background: rgba(16,14,12,.55);
-      display: none; padding: 1rem;
+      display: none; padding: 12px; place-items: center;
     }
-    .modal.open { display: flex; align-items: center; justify-content: center; }
+    .modal.open { display: grid; }
     .sheet {
-      width: min(32rem, 100%); margin: 0; background: var(--ivory); border-radius: 12px;
-      padding: 1.5rem; max-height: 84vh; overflow: auto;
+      width: min(28rem, calc(100vw - 1.5rem)); margin: 0; background: var(--ivory); border-radius: 12px;
+      padding: 0.95rem 1rem 1.05rem; max-height: 92dvh; overflow: hidden;
     }
-    .sheet-h { display: flex; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
-    .x { width: 2.75rem; height: 2.75rem; border: 0; background: transparent; border-radius: 6px; font-size: 1.4rem; }
+    .sheet-h { display: flex; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.65rem; }
+    .sheet h3 { font-size: 1.35rem !important; }
+    .form-fields .chips { display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem; margin-bottom: 0.5rem; }
+    .form-fields .chip { height: 2.15rem; border-radius: 6px; }
+    .form-fields .field { margin-top: 0.45rem !important; font-size: 11px; }
+    .form-fields input { height: 2.3rem; }
+    .form-fields textarea { height: 3.2rem; min-height: 3.2rem; resize: none; padding: 0.45rem 0.65rem; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem; }
+    .x { width: 2.25rem; height: 2.25rem; border: 0; background: transparent; border-radius: 6px; font-size: 1.4rem; }
     .ok { display: none; }
     .modal.sent .form-fields { display: none; }
     .modal.sent .ok { display: block; }
@@ -286,25 +294,25 @@
       .calc { padding: 1.5rem; }
     }
     @media (prefers-reduced-motion: reduce) {
-      * { animation: none !important; }
+      .shine::after { animation: none; transform: translateX(40%) skewX(-18deg); opacity: .55; }
     }
     .consult-overlay {
       display: none; position: fixed; inset: 0; z-index: 90;
-      place-items: center; padding: 16px;
-      padding-bottom: max(16px, env(safe-area-inset-bottom));
+      place-items: center; padding: 12px;
+      padding-bottom: max(12px, env(safe-area-inset-bottom));
       background: rgba(16,14,12,.55);
     }
     .consult-overlay.is-open { display: grid; }
     .consult-sheet {
-      width: min(32rem, calc(100vw - 2rem)); max-height: min(86vh, calc(100dvh - 2rem));
-      overflow: auto; border-radius: 12px; padding: 1.35rem 1.4rem 1.5rem;
+      width: min(28rem, calc(100vw - 1.5rem)); max-height: 92dvh;
+      overflow: hidden; border-radius: 12px; padding: 0.95rem 1rem 1.05rem;
       background: var(--ivory); color: var(--ink); font-family: var(--sans);
       box-shadow: 0 20px 50px rgba(16,14,12,.28);
     }
-    .consult-sheet h2 { margin: 0; font-family: var(--display); font-size: 1.6rem; font-weight: 500; }
-    .consult-h { display: flex; justify-content: space-between; gap: 0.75rem; margin-bottom: 1rem; }
-    .consult-h p { margin: 0.35rem 0 0; font-size: 13px; color: var(--muted); }
-    .consult-sheet label { display: block; font-size: 12px; color: var(--muted); margin-top: 12px; }
+    .consult-sheet h2 { margin: 0; font-family: var(--display); font-size: 1.35rem; font-weight: 500; }
+    .consult-h { display: flex; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.65rem; }
+    .consult-h p { margin: 0.2rem 0 0; font-size: 12px; color: var(--muted); }
+    .consult-sheet label { display: block; font-size: 11px; color: var(--muted); margin-top: 8px; }
     .consult-sheet input, .consult-sheet textarea {
       display: block; width: 100%; margin-top: 4px; border: 1px solid var(--line);
       background: var(--cream); border-radius: 6px; padding: 0 .75rem; font: inherit; color: var(--ink); height: 2.75rem;
@@ -543,19 +551,21 @@
     <form class="sheet" id="consultForm">
       <div class="sheet-h">
         <div>
-          <h3 id="modalTitle" style="font-size:1.6rem">일반 상담</h3>
-          <p class="muted" id="modalDesc" style="margin:.35rem 0 0;font-size:13px">예상가는 참고입니다. 최종 금액은 매장 감정 후 확정됩니다.</p>
+          <h3 id="modalTitle">일반 상담</h3>
+          <p class="muted" id="modalDesc" style="margin:.2rem 0 0;font-size:12px">최종 금액은 매장 감정 후 확정됩니다.</p>
         </div>
         <button class="x" type="button" id="closeModal" aria-label="닫기">×</button>
       </div>
       <div class="form-fields">
         <div class="chips" id="types"></div>
-        <p class="muted" id="estBox" style="display:none;border:1px solid var(--line);background:var(--cream);padding:8px 12px;border-radius:6px;font-variant-numeric:tabular-nums"></p>
-        <label class="field">이름<input name="name" required placeholder="김지수" /></label>
-        <label class="field" style="margin-top:12px">연락처<input name="phone" required inputmode="tel" placeholder="010-0000-0000" /></label>
-        <label class="field" style="margin-top:12px">방문 희망일<input name="visitDate" type="date" /></label>
-        <label class="field" style="margin-top:12px">메모 · 사진 설명<textarea name="message" id="msg" placeholder="중량, 순도, 원하는 사이즈를 적어주세요."></textarea></label>
-        <button class="btn full" type="submit" style="margin-top:16px">상담 요청 보내기</button>
+        <p class="muted" id="estBox" style="display:none;border:1px solid var(--line);background:var(--cream);padding:6px 10px;border-radius:6px;font-size:12px;font-variant-numeric:tabular-nums"></p>
+        <div class="form-grid">
+          <label class="field">이름<input name="name" required placeholder="김지수" /></label>
+          <label class="field">연락처<input name="phone" required inputmode="tel" placeholder="010-0000-0000" /></label>
+        </div>
+        <label class="field">방문 희망일<input name="visitDate" type="date" /></label>
+        <label class="field">메모<textarea name="message" id="msg" placeholder="중량, 순도, 사이즈"></textarea></label>
+        <button class="btn full" type="submit" style="margin-top:10px;height:2.6rem">상담 요청 보내기</button>
       </div>
       <div class="ok">
         <p class="muted" style="background:var(--paper);padding:12px 16px;border-radius:6px">요청이 이 기기에 저장되었습니다. 지금 전화하거나 문자로 이어가시면 더 빠릅니다.</p>

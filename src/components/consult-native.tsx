@@ -33,8 +33,8 @@ function paint(root: HTMLElement, opts: ConsultDraft = {}) {
   if (title) title.textContent = factory ? "공장 상담" : "일반 상담";
   if (desc) {
     desc.textContent = factory
-      ? "공장직영 맞춤 제작입니다. 재료비+공임 기준으로 견적합니다."
-      : "예상가는 참고입니다. 최종 금액은 매장 감정 후 확정됩니다.";
+      ? "공장직영. 재료비+공임 기준으로 견적합니다."
+      : "최종 금액은 매장 감정 후 확정됩니다.";
   }
   if (est) {
     if (opts.estimate) {
@@ -170,7 +170,7 @@ export function NativeConsult() {
           <div className="consult-h">
             <div>
               <h2 id="consult-title">일반 상담</h2>
-              <p id="consult-desc">예상가는 참고입니다. 최종 금액은 매장 감정 후 확정됩니다.</p>
+              <p id="consult-desc">최종 금액은 매장 감정 후 확정됩니다.</p>
             </div>
             <button id="consult-close" type="button" aria-label="닫기">
               ×
@@ -192,21 +192,23 @@ export function NativeConsult() {
               </button>
             </div>
             <p id="consult-est" hidden />
-            <label>
-              이름
-              <input name="name" required placeholder="김지수" />
-            </label>
-            <label>
-              연락처
-              <input name="phone" required inputMode="tel" placeholder="010-0000-0000" />
-            </label>
+            <div className="consult-grid">
+              <label>
+                이름
+                <input name="name" required placeholder="김지수" />
+              </label>
+              <label>
+                연락처
+                <input name="phone" required inputMode="tel" placeholder="010-0000-0000" />
+              </label>
+            </div>
             <label>
               방문 희망일
               <input name="visitDate" type="date" />
             </label>
             <label>
-              메모 · 사진 설명
-              <textarea id="consult-msg" name="message" placeholder="중량, 순도, 원하는 사이즈를 적어주세요." />
+              메모
+              <textarea id="consult-msg" name="message" placeholder="중량, 순도, 사이즈" />
             </label>
             <button className="consult-submit" type="submit">
               상담 요청 보내기

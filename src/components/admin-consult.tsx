@@ -46,7 +46,7 @@ export function GoldBarButton() {
     <>
       <button
         type="button"
-        className="ml-1 inline-flex size-8 shrink-0 items-center justify-center rounded-sm opacity-80 hover:opacity-100"
+        className="relative z-20 ml-1 inline-flex size-11 shrink-0 items-center justify-center rounded-sm opacity-90"
         aria-label="상담 내역"
         onClick={() => setOpen(true)}
       >
@@ -124,7 +124,7 @@ function AdminPanel({ onClose }: { onClose: () => void }) {
   return (
     <div className="fixed inset-0 z-[80] flex items-center justify-center p-4" role="dialog" aria-modal="true">
       <button type="button" className="absolute inset-0 bg-night/55" aria-label="닫기" onClick={onClose} />
-      <div className="relative z-10 max-h-[86vh] w-full max-w-lg overflow-y-auto rounded-xl bg-ivory p-5 shadow-xl sm:p-6">
+      <div className="relative z-10 max-h-[92dvh] w-full max-w-md overflow-hidden rounded-xl bg-ivory p-4 shadow-xl">
         <div className="mb-4 flex items-start justify-between gap-3">
           <div>
             <h2 className="font-display text-2xl text-ink">
