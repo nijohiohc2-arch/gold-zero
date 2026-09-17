@@ -94,7 +94,8 @@
       position: absolute; inset: 0;
       background: linear-gradient(90deg, rgba(16,14,12,.55) 0%, rgba(16,14,12,.4) 40%, rgba(16,14,12,.75) 100%);
     }
-    .hero-copy { position: relative; padding: 7rem 0 4rem; }
+    .hero-copy { position: relative; padding: 7rem 1.25rem 4rem; }
+    .kicker { font-size: 12px; letter-spacing: 0.28em; color: var(--gold); margin: 0; }
     .kicker { font-size: 12px; letter-spacing: 0.28em; color: var(--gold); margin: 0; }
     .hero h1 { font-size: clamp(2.6rem, 8vw, 4.5rem); line-height: 1.05; margin-top: 1rem; }
     .hero p { max-width: 28rem; margin: 1.2rem 0 0; color: rgba(247,243,236,.75); font-size: 15px; line-height: 1.6; }
@@ -111,7 +112,7 @@
     .btn-ghost { background: transparent; color: var(--ink); }
     .btn.full { width: 100%; }
     .btn:disabled { opacity: .4; cursor: not-allowed; }
-    .cards { display: grid; gap: 0.75rem; padding: 2.5rem 0; }
+    .cards { display: grid; gap: 0.75rem; padding: 2.5rem 1.25rem; }
     .card {
       border: 1px solid var(--line); background: var(--cream);
       border-radius: 8px; padding: 1.25rem; text-decoration: none; color: inherit;
@@ -259,8 +260,9 @@
     .sticky a, .sticky button {
       height: 3.5rem; border: 0; background: transparent; color: var(--ink);
       font-size: 11px; text-decoration: none; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 2px;
+      align-items: center; justify-content: center; gap: 3px;
     }
+    .sticky svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.8; }
     .sticky .factory-btn { background: var(--night); color: var(--gold-bright); }
     .modal {
       position: fixed; inset: 0; z-index: 60; background: rgba(16,14,12,.55);
@@ -286,19 +288,24 @@
     @media (prefers-reduced-motion: reduce) {
       * { animation: none !important; }
     }
-    .consult-dialog {
-      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      margin: 0; width: min(32rem, calc(100vw - 2rem)); max-height: 84vh; overflow: auto;
-      border: 0; border-radius: 12px; padding: 1.35rem 1.4rem 1.5rem;
+    .consult-overlay {
+      display: none; position: fixed; inset: 0; z-index: 90;
+      place-items: center; padding: 16px;
+      padding-bottom: max(16px, env(safe-area-inset-bottom));
+      background: rgba(16,14,12,.55);
+    }
+    .consult-overlay.is-open { display: grid; }
+    .consult-sheet {
+      width: min(32rem, calc(100vw - 2rem)); max-height: min(86vh, calc(100dvh - 2rem));
+      overflow: auto; border-radius: 12px; padding: 1.35rem 1.4rem 1.5rem;
       background: var(--ivory); color: var(--ink); font-family: var(--sans);
       box-shadow: 0 20px 50px rgba(16,14,12,.28);
     }
-    .consult-dialog::backdrop { background: rgba(16,14,12,.55); }
-    .consult-dialog h2 { margin: 0; font-family: var(--display); font-size: 1.6rem; font-weight: 500; }
+    .consult-sheet h2 { margin: 0; font-family: var(--display); font-size: 1.6rem; font-weight: 500; }
     .consult-h { display: flex; justify-content: space-between; gap: 0.75rem; margin-bottom: 1rem; }
     .consult-h p { margin: 0.35rem 0 0; font-size: 13px; color: var(--muted); }
-    .consult-dialog label { display: block; font-size: 12px; color: var(--muted); margin-top: 12px; }
-    .consult-dialog input, .consult-dialog textarea {
+    .consult-sheet label { display: block; font-size: 12px; color: var(--muted); margin-top: 12px; }
+    .consult-sheet input, .consult-sheet textarea {
       display: block; width: 100%; margin-top: 4px; border: 1px solid var(--line);
       background: var(--cream); border-radius: 6px; padding: 0 .75rem; font: inherit; color: var(--ink); height: 2.75rem;
     }
@@ -339,7 +346,7 @@
           <em>◆</em>
           <b>공장직접운영</b>
         </a>
-        <button type="button" id="goldBar" data-open-admin aria-label="상담 내역">
+        <button type="button" id="goldBar" data-open-admin aria-label="상담 내역" onclick="if(window.openAdminNow)openAdminNow()">
           <img src="gold-bars.png" alt="" />
         </button>
       </div>
@@ -514,10 +521,22 @@
   </footer>
 
   <div class="sticky">
-    <a href="#calculator">계산기</a>
-    <button type="button" id="stickyConsult">일반 상담</button>
-    <button class="factory-btn shine" type="button" id="stickyFactory">공장 상담</button>
-    <a href="tel:050713453180">전화</a>
+    <a href="#calculator">
+      <svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01"/></svg>
+      계산기
+    </a>
+    <button type="button" id="stickyConsult">
+      <svg viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/></svg>
+      일반 상담
+    </button>
+    <button class="factory-btn shine" type="button" id="stickyFactory">
+      <svg viewBox="0 0 24 24"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/></svg>
+      공장 상담
+    </button>
+    <a href="tel:050713453180">
+      <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      전화
+    </a>
   </div>
 
   <div class="modal" id="modal" role="dialog" aria-modal="true">

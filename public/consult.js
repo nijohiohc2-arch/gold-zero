@@ -173,10 +173,11 @@
   let adminFilter = "today";
   function ensureAdmin() {
     if ($("admin-now")) return $("admin-now");
-    const d = document.createElement("dialog");
+    const d = document.createElement("div");
     d.id = "admin-now";
-    d.className = "consult-dialog";
+    d.className = "consult-overlay";
     d.innerHTML = `
+      <div class="consult-sheet">
       <div class="consult-h">
         <div>
           <h2 id="admin-title">관리자</h2>
@@ -212,6 +213,7 @@
           <button type="button" id="admin-csv">CSV</button>
         </div>
         <div id="admin-rows"></div>
+      </div>
       </div>`;
     document.body.appendChild(d);
     return d;
@@ -272,20 +274,29 @@
   function openAdminNow() {
     const d = ensureAdmin();
     showGate(localStorage.getItem(PIN_KEY) ? "admin-pin" : "admin-setup");
-    if (!d.open) d.showModal();
+    d.classList.add("is-open");
+  }
+  function closeAdminNow() {
+    const d = $("admin-now");
+    if (d) d.classList.remove("is-open");
   }
   window.openAdminNow = openAdminNow;
 
   document.addEventListener("click", (e) => {
-    const bar = e.target.closest && e.target.closest("[data-open-admin], #goldBar");
+    const node = e.target && e.target.closest ? e.target : (e.target && e.target.parentElement);
+    const bar = node && node.closest && node.closest("[data-open-admin], #goldBar");
     if (bar) {
       e.preventDefault();
       openAdminNow();
       return;
     }
-    if (e.target && e.target.id === "admin-close") {
-      const d = $("admin-now");
-      if (d && d.open) d.close();
+    if (node && node.closest && node.closest("#admin-close")) {
+      closeAdminNow();
+      return;
+    }
+    if (e.target && e.target.id === "admin-now") {
+      closeAdminNow();
+      return;
     }
     if (e.target && e.target.id === "admin-to-reset") showGate("admin-reset");
     if (e.target && e.target.id === "admin-to-full") showGate("admin-full");
